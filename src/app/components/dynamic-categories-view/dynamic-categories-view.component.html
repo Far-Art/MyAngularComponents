@@ -1,0 +1,16 @@
+<section>
+  <div *ngFor="let category of categories | keyvalue">
+    <a class="category-main">
+      {{category.key}}
+    </a>
+    <div *ngIf="category.value.length > 0">
+      <a *ngFor="let nested of category.value">
+        {{nested}}
+        <br/>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+

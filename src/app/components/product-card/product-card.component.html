@@ -1,0 +1,26 @@
+<div class="app-product-container">
+  <span>Name</span> : <span>{{product.name}}</span>
+  <br/>
+
+  <span>Description</span> : <span>{{product.description}}</span>
+  <br/>
+
+  <span>features</span> : <span *ngFor="let feature of product.features">{{feature}}, </span>
+  <br/>
+
+  <span>price</span> : <span>{{product.price}}</span>
+  <br/>
+
+  <span>quantity</span> : <span>{{product.quantity}}</span>
+  <br/>
+
+  <span>tags</span> : <span *ngFor="let tag of product.tags">{{tag}}, </span>
+  <br/>
+
+  <span>category</span> : <span *ngFor="let category of product.category">{{category}}, </span>
+  <br/>
+
+  <span>specs</span> : <span *ngFor="let entry of product.specs">
+    <span *ngFor="let spec of entry | keyvalue">{{spec.key}} : {{spec.value}}</span>
+  </span>
+</div>

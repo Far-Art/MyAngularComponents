@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Product} from "../../../models/Product.model";
+import {ProductModel} from "../../../models/Product.model";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-add-product',
@@ -11,8 +12,10 @@ export class AddProductComponent implements OnInit {
   constructor() {
   }
 
+  name = new FormControl('');
+
   @Input()
-  product!: Product;
+  product!: ProductModel;
 
   ngOnInit(): void {
     if (this.product === undefined) {
@@ -28,7 +31,6 @@ export class AddProductComponent implements OnInit {
           tags: ["empty"],
           specs: [new Map]
         }
-
     }
   }
 }
