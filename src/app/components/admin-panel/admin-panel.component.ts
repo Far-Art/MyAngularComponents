@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ProductModel} from "../../../models/Product.model";
 import {AppCategories} from "../../../shared/AppCategories";
+import {CategoryModel} from "../../../models/CategoryModel";
 
 @Component({
   selector: 'app-admin-panel',
@@ -11,7 +12,7 @@ export class AdminPanelComponent implements OnInit {
 
   adminPanelTitle = 'Admin Panel';
 
-  categories: Map<string, string[]> = new AppCategories().categories;
+  categories: CategoryModel[] = new AppCategories().categories;
 
   product: ProductModel = {
     name: "PC",

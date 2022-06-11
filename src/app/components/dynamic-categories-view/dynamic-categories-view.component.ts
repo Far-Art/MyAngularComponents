@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {CategoryModel} from "../../../models/CategoryModel";
 
 @Component({
   selector: 'app-dynamic-categories-view',
@@ -7,10 +8,10 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class DynamicCategoriesViewComponent implements OnInit {
 
-  @Input() categories: Map<string, string[]>;
+  @Input() categories: CategoryModel[];
 
   constructor() {
-    this.categories = new Map();
+    this.categories = [];
   }
 
   ngOnInit(): void {
