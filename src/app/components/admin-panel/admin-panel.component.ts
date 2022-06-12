@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {ProductModel} from "../../../models/Product.model";
-import {AppCategories} from "../../../shared/AppCategories";
 import {CategoryModel} from "../../../models/CategoryModel";
 
 @Component({
@@ -12,7 +11,7 @@ export class AdminPanelComponent implements OnInit {
 
   adminPanelTitle = 'Admin Panel';
 
-  categories: CategoryModel[] = new AppCategories().categories;
+  categories!: CategoryModel[];
 
   product: ProductModel = {
     name: "PC",
