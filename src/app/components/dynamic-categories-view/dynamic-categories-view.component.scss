@@ -1,3 +1,28 @@
+.category-container {
+
+  &:hover {
+    background: darkgray;
+  }
+}
+
+.category {
+  cursor: pointer;
+
+  &:hover {
+    background: red;
+  }
+
+  &.selected {
+    background: darkred;
+    font-weight: bold;
+  }
+}
+
 .category-main {
   background: aquamarine;
 }
+
+.category-secondary {
+
+}
+
