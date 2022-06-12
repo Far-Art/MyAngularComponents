@@ -7,11 +7,34 @@ import {CategoryModel} from "../../models/CategoryModel";
 export class AppCategoriesService {
   private categories: CategoryModel[];
 
-  public getCategories(): CategoryModel[] {
+  private selectedCategories: string[];
+
+  get getCategories(): CategoryModel[] {
     return this.categories;
   }
 
+  get getSelectedCategories(): string[] {
+    return this.selectedCategories;
+  }
+
+  categoryClicked(category: string) {
+    if (this.selectedCategories.includes(category)) {
+      this.removeSelectedCategory(category);
+    } else {
+      this.addSelectedCategory(category);
+    }
+  }
+
+  private addSelectedCategory(category: string) {
+    this.selectedCategories = this.selectedCategories.concat(category)
+  }
+
+  private removeSelectedCategory(category: string) {
+    this.selectedCategories = this.selectedCategories.filter(cat => cat != category);
+  }
+
   constructor() {
+    this.selectedCategories = [];
     this.categories = [
       {
         main: "מחשב בהתאמה אישית",

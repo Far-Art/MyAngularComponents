@@ -1,14 +1,23 @@
 <section>
-  <div *ngFor="let category of categories">
-    <a class="category-main">
+  <div *ngFor="let category of categories"
+       class="category-container">
+
+    <a class="category category-main"
+       [class.selected]="selectedCategories.includes(category.main)"
+       (click)="onCategoryClick(category.main)">
       {{category.main}}
     </a>
+
     <div *ngIf="category.secondary.length > 0">
-      <a *ngFor="let secondary of category.secondary">
+      <a *ngFor="let secondary of category.secondary"
+         class="category category-secondary"
+         [class.selected]="selectedCategories.includes(secondary)"
+         (click)="onCategoryClick(secondary)">
         {{secondary}}
         <br/>
       </a>
     </div>
+
   </div>
 </section>
 
