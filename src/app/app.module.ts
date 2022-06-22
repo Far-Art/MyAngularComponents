@@ -10,6 +10,8 @@ import {DynamicCategoriesViewComponent} from './components/dynamic-categories-vi
 import {AppRoutingModule} from './routing/app-routing.module';
 import {AppCategoriesService} from './services/app-categories.service';
 import { CategoryViewComponent } from './components/category-view/category-view.component';
+import { DraggableTableComponent } from './components/draggable-table/draggable-table.component';
+import { MouseAllDirective } from './directives/mouse-all.directive';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { CategoryViewComponent } from './components/category-view/category-view.
     AddProductComponent,
     ProductCardComponent,
     DynamicCategoriesViewComponent,
-    CategoryViewComponent
+    CategoryViewComponent,
+    DraggableTableComponent,
+    MouseAllDirective
   ],
   imports: [
     BrowserModule,
