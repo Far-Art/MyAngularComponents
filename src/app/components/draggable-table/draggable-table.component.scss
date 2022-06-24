@@ -1,7 +1,22 @@
 tr {
-  background: darkgray;
+  background: red;
+  transition: all 1s linear;
+  transition-duration: 2s;
 }
 
 td {
+  border: 0.1em solid black;
+  font-size: 2rem;
   cursor: grab;
+  padding: 0.1em 2em;
+  background: darkgray;
 }
+
+.relative {
+  position: relative;
+}
+
+.drag-animation {
+  transition: all 1s linear;
+}
+

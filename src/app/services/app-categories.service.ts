@@ -26,11 +26,12 @@ export class AppCategoriesService {
   }
 
   private addSelectedCategory(category: string) {
-    this.selectedCategories = this.selectedCategories.concat(category)
+    this.selectedCategories.push(category)
   }
 
   private removeSelectedCategory(category: string) {
-    this.selectedCategories = this.selectedCategories.filter(cat => cat != category);
+    let index = this.selectedCategories.findIndex(cat => cat === category);
+    this.selectedCategories.splice(index, 1);
   }
 
   constructor() {

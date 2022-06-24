@@ -1,9 +1,14 @@
 <div>
   <table>
     <tbody>
-    <tr *ngFor="let item of content">
-      <td ()="contentDragEvent($event, item)"
-      >{{item}}</td>
+    <tr *ngFor="let elem of content"
+        [classList]="'relative drag-animation'"
+        (pointerdown)="startDrag()"
+        (pointerup)="stopDrag()"
+        (pointermove)="draggingEvent($event)"
+        [attr.inDragMode]="isInDragMode"
+    >
+      <td>{{elem}}</td>
     </tr>
     </tbody>
   </table>

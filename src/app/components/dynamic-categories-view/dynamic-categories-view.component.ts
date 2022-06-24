@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CategoryModel} from "../../../models/CategoryModel";
 import {AppCategoriesService} from "../../services/app-categories.service";
 
@@ -13,11 +13,13 @@ export class DynamicCategoriesViewComponent implements OnInit {
   selectedCategories: string[];
 
   constructor(private categoriesService: AppCategoriesService) {
-    this.categories = categoriesService.getCategories;
-    this.selectedCategories = categoriesService.getSelectedCategories;
+    this.categories = [];
+    this.selectedCategories = [];
   }
 
   ngOnInit(): void {
+    this.categories = this.categoriesService.getCategories;
+    this.selectedCategories = this.categoriesService.getSelectedCategories;
   }
 
   onCategoryClick(category: string) {
