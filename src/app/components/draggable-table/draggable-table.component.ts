@@ -1,4 +1,5 @@
 import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {WindowRefService} from "../../window-ref.service";
 
 @Component({
   selector: 'app-draggable-table',
@@ -7,51 +8,74 @@ import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/c
 })
 export class DraggableTableComponent implements OnInit {
 
-  constructor() {
+  // TODO rewrite global pointer functions, now the work twice
+
+  content: any[];
+
+  tempContent: any[];
+
+  draggingContent: any[];
+
+  isHolding = false;
+
+  mouse: { moveX: number, moveY: number } = {moveX: 0, moveY: 0};
+
+  clickLocation: { mouseX: number, mouseY: number } = {mouseX: 0, mouseY: 0};
+
+  private addGlobalPointerListener = (event: MouseEvent, elem: any) => this.windowRef?.nativeWindow?.addEventListener("pointerup", () => this.dropElement(event, elem));
+
+  private removeGlobalPointerListener = (event: MouseEvent, elem: any) => this.windowRef?.nativeWindow?.removeEventListener("pointerup", () => this.dropElement(event, elem));
+
+
+  constructor(private windowRef: WindowRefService) {
     this.content = ["111", "222", "333", "444", "555"];
-    this.toDragContent = [];
+    this.draggingContent = [];
+    this.tempContent = [...this.content];
   }
-
-  content: string[];
-
-  toDragContent: string[];
-
-  isInDragMode = false;
-
-  mouseCoordinates: { mouseX: number, mouseY: number } = {mouseX: 0, mouseY: 0};
 
   ngOnInit(): void {
-
   }
 
-  public startDrag() {
-    this.isInDragMode = true;
+  public clickOnElement(event: MouseEvent, elem: any) {
+    this.addGlobalPointerListener(event, elem);
+    this.isHolding = true;
+    this.clickLocation = {mouseX: Math.floor(event.x), mouseY: Math.floor(event.y)}
+  }
+
+  public dropElement(event: MouseEvent, elem: any) {
+    this.isHolding = false;
+    this.removeGlobalPointerListener(event, elem);
+    this.removeElementFromDragging(elem);
+    console.log(this.draggingContent);
   }
 
   public draggingEvent(event: MouseEvent) {
-    const target: HTMLTableRowElement = <HTMLTableRowElement>event.target;
-
-    if (this.isInDragMode) {
-      console.log("x", event.x);
-      console.log("y", event.y);
-      // target.style.position = "relative";
-      // target.style.transition = `all 1s linear`;
-      this.mouseCoordinates.mouseX = event.x;
-      this.mouseCoordinates.mouseY = event.y;
-
-      target.style.left = `${this.mouseCoordinates.mouseX}px`;
-      target.style.top = `${this.mouseCoordinates.mouseY}px`;
-
+    let target: HTMLTableRowElement = event.composedPath()[1] as HTMLTableRowElement;
+    const rect = target.getBoundingClientRect()
+    this.calcMouseRelativePosition(event, rect);
+    if (this.isHolding) {
+      // target.style.transform = `translate3d(${this.mouse.moveX}px, ${this.mouse.moveY}px, 0)`;
+      target.style.left = `${this.mouse.moveX}px`;
+      target.style.top = `${this.mouse.moveY}px`;
     }
   }
 
-  public stopDrag() {
-    this.isInDragMode = false;
+  public calcMouseRelativePosition(event: MouseEvent, rect: DOMRect) {
+    this.mouse.moveX = Math.floor(event.x - this.clickLocation.mouseX);
+    this.mouse.moveY = Math.floor(event.y - this.clickLocation.mouseY);
   }
 
-  public follow(event: MouseEvent) {
-    const target = <HTMLTableRowElement>event.target;
-    target.style.offset = `10px 20px`;
+
+  public addElementToDragging(elem: any) {
+    this.draggingContent.push(elem);
+  }
+
+  private removeElementFromDragging(elem: any) {
+    this.draggingContent = this.draggingContent.filter(e => e !== elem);
+  }
+
+  public swapElements(element: string) {
+    console.log(element);
   }
 
 }
