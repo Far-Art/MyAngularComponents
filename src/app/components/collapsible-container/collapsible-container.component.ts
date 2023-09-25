@@ -2,15 +2,12 @@ import {
   AfterViewInit,
   Component,
   DoCheck,
-  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
   OnInit,
   Optional,
   Output,
-  Renderer2,
-  Self,
   SimpleChanges,
   SkipSelf
 } from '@angular/core';
@@ -24,15 +21,14 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
     // onContainerInit disables collapse/expand animation on first render to prevent unnecessary view jumping
     trigger('onContainerInit', [transition(':enter', [])]),
     trigger('verticalLineRotate', [
-      state('false', style({transform: 'rotate(0)'})),
-      state('true', style({transform: 'rotate(-90deg)'})),
-      transition('false <=> true', animate(180)),
+      state('true', style({transform: 'rotate(0)'})),
+      state('false', style({transform: 'rotate(-90deg)'})),
+      transition('true <=> false', animate(180)),
     ]),
     trigger('horizontalLineRotate', [
-      state('false', style({transform: 'rotate(180deg)'})),
-      state('true', style({transform: 'rotate(0)'})),
-      transition('* => true', animate(180)),
-      transition('* => false', animate(180)),
+      state('true', style({transform: 'rotate(180deg)'})),
+      state('false', style({transform: 'rotate(0)'})),
+      transition('true <=> false', animate(180)),
     ]),
     trigger(
       'expandCollapse',
@@ -74,9 +70,7 @@ export class CollapsibleContainerComponent implements OnInit, OnChanges, AfterVi
   @Input() title?: string;
   @Input() propagateState = false;
 
-  constructor(@Optional() @SkipSelf() private parent: CollapsibleContainerComponent,
-              @Self() private self: ElementRef,
-              private renderer: Renderer2) {
+  constructor(@Optional() @SkipSelf() private parent: CollapsibleContainerComponent) {
     this.isNested = parent != null;
     this.nestingLevel = this.parent?.nestingLevel + 1 || 0;
     this.isCollapsedState = this.isNested;
@@ -107,6 +101,9 @@ export class CollapsibleContainerComponent implements OnInit, OnChanges, AfterVi
     } else if (changes['invalid']) {
       this.recursiveSetParentStyle(this);
     }
+  }
+
+  ngDoCheck(): void {
   }
 
   switchState() {
@@ -141,21 +138,11 @@ export class CollapsibleContainerComponent implements OnInit, OnChanges, AfterVi
     this.expandedChange.emit(this.expanded);
   }
 
-  private observeStyleChanges() {
-    const element = this.self.nativeElement as HTMLElement;
-    const observer = new MutationObserver(() => this.recursiveSetParentStyle(this));
-    observer.observe(element, {attributes: true, attributeFilter: ['style']});
-  }
-
   private recursiveSetParentStyle(element: CollapsibleContainerComponent) {
     if (element.isNested) {
       element.parent.invalid = element.invalid;
       this.recursiveSetParentStyle(this.parent);
     }
   }
-
-  ngDoCheck(): void {
-  }
-
 
 }

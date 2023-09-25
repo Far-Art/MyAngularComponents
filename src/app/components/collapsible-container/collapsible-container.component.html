@@ -31,7 +31,7 @@
 
 <ng-template #defaultToggleIcon>
   <div class="plus-button">
-    <div class="horizontal-line" [@horizontalLineRotate]="'' + isCollapsedState"></div>
-    <div class="vertical-line" [@verticalLineRotate]="'' + isCollapsedState"></div>
+    <div class="horizontal-line" [@horizontalLineRotate]="isCollapsedState"></div>
+    <div class="vertical-line" [@verticalLineRotate]="isCollapsedState"></div>
   </div>
 </ng-template>
