@@ -8,7 +8,7 @@ export class WindowRefService {
   constructor() {
   }
 
-  get nativeWindow(): any {
+  get windowObject(): any {
     return window;
   }
 }

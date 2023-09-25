@@ -1,0 +1,35 @@
+<div class="collapsible-container"
+     [ngClass]="{'disabled': disabled, 'nested': isNested, 'invalid': invalid}"
+     @container>
+
+  <div class="collapsible-container-header"
+       [ngClass]="{'disabled': disabled, 'nested': isNested, 'invalid': invalid}">
+
+    <button class="collapsible-container-button"
+            [ngClass]="{'disabled': disabled,'invalid': invalid}"
+            (click)="switchToggle()">
+      {{isCollapsedState ? '+' : '-'}}
+    </button>
+
+    <div class="collapsible-container-header-content">
+      <ng-container [ngTemplateOutlet]="title ? headerTitle : headerContent"></ng-container>
+    </div>
+  </div>
+
+  <div class="collapsible-container-content"
+       [ngClass]="{'disabled': disabled,'invalid': invalid}"
+       *ngIf="!isCollapsedState"
+       @expandCollapse [@.disabled]="false">
+    <ng-content></ng-content>
+  </div>
+</div>
+
+<ng-template #headerTitle>
+  <span class="collapsible-container-header-title">
+    {{title}}
+  </span>
+</ng-template>
+
+<ng-template #headerContent>
+  <ng-content select="[header]"></ng-content>
+</ng-template>

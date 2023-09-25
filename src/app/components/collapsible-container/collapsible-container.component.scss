@@ -1,0 +1,63 @@
+$background-color: #fafafc;
+$background-color-nested: none;
+
+$shadow-color: rgba(0 0 0 / 0.07);
+$shadow-color-nested: rgba(0 0 0 / 0.07);
+
+$container-shadow: 0 -1px 15px $shadow-color, 0 2px 5px -1px $shadow-color;
+$container-shadow-nested: none;
+
+$header-color: #a9a9fd;
+$header-color-nested: #bea9fd;
+
+:host {
+  display: block;
+  padding: 0 0 0 0.1em;
+
+}
+
+.collapsible-container {
+  position: relative;
+  margin: 0.5em 0.3em;
+  border: 1px solid $header-color;
+  border-radius: 0.25em;
+  overflow: hidden;
+  box-shadow: $container-shadow;
+  background: $background-color;
+
+  &-content {
+    overflow: hidden;
+
+    &.nested {
+      background: $background-color-nested;
+      box-shadow: $container-shadow-nested;
+      border: none;
+    }
+  }
+
+  &-header {
+    background: $header-color;
+    display: flex;
+    padding: 0.1em 0.4em;
+    align-items: center;
+
+    &.invalid {
+
+    }
+
+    &.nested {
+      background: $header-color-nested;
+    }
+
+    &-title {
+      display: inline-block;
+    }
+
+    &-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+}

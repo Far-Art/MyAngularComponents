@@ -22,9 +22,9 @@ export class DraggableTableComponent implements OnInit {
 
   clickLocation: { mouseX: number, mouseY: number } = {mouseX: 0, mouseY: 0};
 
-  private addGlobalPointerListener = (event: MouseEvent, elem: any) => this.windowRef?.nativeWindow?.addEventListener("pointerup", () => this.dropElement(event, elem));
+  private addGlobalPointerListener = (event: MouseEvent, elem: any) => this.windowRef?.windowObject?.addEventListener("pointerup", () => this.dropElement(event, elem));
 
-  private removeGlobalPointerListener = (event: MouseEvent, elem: any) => this.windowRef?.nativeWindow?.removeEventListener("pointerup", () => this.dropElement(event, elem));
+  private removeGlobalPointerListener = (event: MouseEvent, elem: any) => this.windowRef?.windowObject?.removeEventListener("pointerup", () => this.dropElement(event, elem));
 
 
   constructor(private windowRef: WindowRefService) {

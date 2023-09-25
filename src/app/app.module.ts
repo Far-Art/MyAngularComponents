@@ -9,9 +9,11 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {DynamicCategoriesViewComponent} from './components/dynamic-categories-view/dynamic-categories-view.component';
 import {AppRoutingModule} from './routing/app-routing.module';
 import {AppCategoriesService} from './services/app-categories.service';
-import { CategoryViewComponent } from './components/category-view/category-view.component';
-import { DraggableTableComponent } from './components/draggable-table/draggable-table.component';
-import { MouseAllDirective } from './directives/mouse-all.directive';
+import {CategoryViewComponent} from './components/category-view/category-view.component';
+import {DraggableTableComponent} from './components/draggable-table/draggable-table.component';
+import {MouseAllDirective} from './directives/mouse-all.directive';
+import {CollapsibleContainerComponent} from "./components/collapsible-container/collapsible-container.component";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -22,10 +24,12 @@ import { MouseAllDirective } from './directives/mouse-all.directive';
     DynamicCategoriesViewComponent,
     CategoryViewComponent,
     DraggableTableComponent,
-    MouseAllDirective
+    MouseAllDirective,
+    CollapsibleContainerComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     ReactiveFormsModule,
     AppRoutingModule
   ],
