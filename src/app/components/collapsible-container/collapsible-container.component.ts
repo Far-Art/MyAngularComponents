@@ -21,13 +21,13 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
     // onContainerInit disables collapse/expand animation on first render to prevent unnecessary view jumping
     trigger('onContainerInit', [transition(':enter', [])]),
     trigger('verticalLineRotate', [
-      state('true', style({transform: 'rotate(0)'})),
-      state('false', style({transform: 'rotate(-90deg)'})),
+      state('false', style({transform: 'rotate(0)'})),
+      state('true', style({transform: 'rotate(-90deg)'})),
       transition('true <=> false', animate(180)),
     ]),
     trigger('horizontalLineRotate', [
-      state('true', style({transform: 'rotate(180deg)'})),
-      state('false', style({transform: 'rotate(0)'})),
+      state('false', style({transform: 'rotate(180deg)'})),
+      state('true', style({transform: 'rotate(0)'})),
       transition('true <=> false', animate(180)),
     ]),
     trigger(
@@ -99,7 +99,7 @@ export class CollapsibleContainerComponent implements OnInit, OnChanges, AfterVi
     } else if (changes['collapsed']) {
       this.setState(changes['collapsed'].currentValue);
     } else if (changes['invalid']) {
-      this.recursiveSetParentStyle(this);
+      // this.recursiveSetParentStyle(this);
     }
   }
 
