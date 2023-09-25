@@ -1,35 +1,37 @@
 <div class="collapsible-container"
-     [ngClass]="{'disabled': disabled, 'nested': isNested, 'invalid': invalid}"
-     @container>
-
+     [ngClass]="{'nested': isNested, 'invalid': invalid, 'disabled': disabled}"
+     @onContainerInit>
   <div class="collapsible-container-header"
-       [ngClass]="{'disabled': disabled, 'nested': isNested, 'invalid': invalid}">
-
-    <button class="collapsible-container-button"
-            [ngClass]="{'disabled': disabled,'invalid': invalid}"
-            (click)="switchToggle()">
-      {{isCollapsedState ? '+' : '-'}}
-    </button>
-
-    <div class="collapsible-container-header-content">
-      <ng-container [ngTemplateOutlet]="title ? headerTitle : headerContent"></ng-container>
+       [ngClass]="{'nested': isNested, 'invalid': invalid, 'disabled': disabled}">
+    <div (click)="switchState()" [ngClass]="{'invalid': invalid, 'disabled': disabled}">
+      <ng-container [ngTemplateOutlet]="defaultToggleIcon"></ng-container>
+    </div>
+    <div class="collapsible-container-header-container">
+      <ng-container [ngTemplateOutlet]=" title ? headerTitle : headerContent"></ng-container>
     </div>
   </div>
 
-  <div class="collapsible-container-content"
-       [ngClass]="{'disabled': disabled,'invalid': invalid}"
-       *ngIf="!isCollapsedState"
-       @expandCollapse [@.disabled]="false">
+  <div *ngIf="!isCollapsedState"
+       @expandCollapse [@.disabled]="disabled"
+       class="collapsible-container-content"
+       [ngClass]="{'disabled': disabled, 'nested': isNested}">
     <ng-content></ng-content>
   </div>
 </div>
 
 <ng-template #headerTitle>
-  <span class="collapsible-container-header-title">
+  <span class="header-title">
     {{title}}
   </span>
 </ng-template>
 
 <ng-template #headerContent>
   <ng-content select="[header]"></ng-content>
+</ng-template>
+
+<ng-template #defaultToggleIcon>
+  <div class="plus-button">
+    <div class="horizontal-line" [@horizontalLineRotate]="'' + isCollapsedState"></div>
+    <div class="vertical-line" [@verticalLineRotate]="'' + isCollapsedState"></div>
+  </div>
 </ng-template>

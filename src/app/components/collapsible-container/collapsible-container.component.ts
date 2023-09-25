@@ -1,76 +1,89 @@
 import {
+  AfterViewInit,
   Component,
-  ElementRef, EventEmitter, Input,
+  DoCheck,
+  ElementRef,
+  EventEmitter,
+  Input,
   OnChanges,
   OnInit,
-  Optional, Output,
+  Optional,
+  Output,
   Renderer2,
   Self,
   SimpleChanges,
   SkipSelf
 } from '@angular/core';
-import {animate, style, transition, trigger} from "@angular/animations";
+import {animate, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'fa-collapsible-container',
   templateUrl: './collapsible-container.component.html',
   styleUrls: ['./collapsible-container.component.scss'],
   animations: [
-    // disable animation on first container enter
-    trigger('container', [
-        transition(':enter', [])
+    // onContainerInit disables collapse/expand animation on first render to prevent unnecessary view jumping
+    trigger('onContainerInit', [transition(':enter', [])]),
+    trigger('verticalLineRotate', [
+      state('false', style({transform: 'rotate(0)'})),
+      state('true', style({transform: 'rotate(-90deg)'})),
+      transition('false <=> true', animate(180)),
+    ]),
+    trigger('horizontalLineRotate', [
+      state('false', style({transform: 'rotate(180deg)'})),
+      state('true', style({transform: 'rotate(0)'})),
+      transition('* => true', animate(180)),
+      transition('* => false', animate(180)),
+    ]),
+    trigger(
+      'expandCollapse',
+      [
+        transition(
+          ':enter',
+          [
+            style({height: '0'}),
+            animate(180, style({height: '*'}))
+          ]
+        ),
+        transition(
+          ':leave',
+          [
+            style({height: '*'}),
+            animate(180, style({height: '0'}))
+          ]
+        )
       ]
-    ),
-    trigger('expandCollapse', [
-      transition(':enter', [
-        style({height: '0'}),
-        animate(180, style({height: '*'}))
-      ]),
-      transition(':leave', [
-        style({height: '*'}),
-        animate(180, style({height: '0'}))
-      ])
-    ])
+    )
   ]
 })
-export class CollapsibleContainerComponent implements OnInit, OnChanges {
+export class CollapsibleContainerComponent implements OnInit, OnChanges, AfterViewInit, DoCheck {
 
-  public readonly nestingLevel: number;
-
-  public readonly isNested: boolean;
-
+  isCollapsedState: boolean;
   private readonly childList: CollapsibleContainerComponent[] = [];
 
-  @Input() collapsed?: boolean;
+  @Input() invalid: boolean = false;
+  @Input() disabled: boolean = false;
+  public readonly isNested: boolean;
+  public readonly nestingLevel: number;
 
+  @Input() collapsed?: boolean;
   @Output() collapsedChange = new EventEmitter<boolean>();
 
   @Input() expanded?: boolean;
-
   @Output() expandedChange = new EventEmitter<boolean>();
 
-  @Input() disabled?: boolean;
-
-  @Input() invalid?: boolean;
-
-  @Input() propagateState?: boolean;
-
   @Input() title?: string;
+  @Input() propagateState = false;
 
-  constructor(
-    @Optional() @SkipSelf() private parent: CollapsibleContainerComponent,
-    @Self() private self: ElementRef,
-    private renderer: Renderer2
-  ) {
+  constructor(@Optional() @SkipSelf() private parent: CollapsibleContainerComponent,
+              @Self() private self: ElementRef,
+              private renderer: Renderer2) {
     this.isNested = parent != null;
+    this.nestingLevel = this.parent?.nestingLevel + 1 || 0;
     this.isCollapsedState = this.isNested;
-    this.nestingLevel = parent?.nestingLevel + 1 || 0;
     if (this.isNested) {
       this.parent.childList.push(this);
     }
   }
-
-  isCollapsedState: boolean;
 
   ngOnInit(): void {
     if (this.expanded != null) {
@@ -83,6 +96,9 @@ export class CollapsibleContainerComponent implements OnInit, OnChanges {
 
   }
 
+  ngAfterViewInit(): void {
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['expanded']) {
       this.setState(!changes['expanded'].currentValue);
@@ -93,36 +109,42 @@ export class CollapsibleContainerComponent implements OnInit, OnChanges {
     }
   }
 
-  switchToggle(): void {
+  switchState() {
     this.setState(!this.isCollapsedState);
   }
 
   private setState(isCollapsed: boolean) {
     if (!this.disabled) {
-      isCollapsed ? this.handleCollapse() : this.handleExpand();
+      isCollapsed ? this.collapse() : this.expand();
     }
   }
 
-  private handleExpand(): void {
+  private expand() {
     this.isCollapsedState = false;
     this.collapsed = this.isCollapsedState;
     this.expanded = !this.isCollapsedState;
     if (this.propagateState) {
-      this.childList.forEach(child => child.handleExpand());
+      this.childList.forEach(child => child.expand());
     }
     this.collapsedChange.emit(this.collapsed);
     this.expandedChange.emit(this.expanded);
   }
 
-  private handleCollapse(): void {
+  private collapse() {
     this.isCollapsedState = true;
     this.collapsed = this.isCollapsedState;
     this.expanded = !this.isCollapsedState;
     if (this.propagateState) {
-      this.childList.forEach(child => child.handleCollapse());
+      this.childList.forEach(child => child.collapse());
     }
     this.collapsedChange.emit(this.collapsed);
     this.expandedChange.emit(this.expanded);
+  }
+
+  private observeStyleChanges() {
+    const element = this.self.nativeElement as HTMLElement;
+    const observer = new MutationObserver(() => this.recursiveSetParentStyle(this));
+    observer.observe(element, {attributes: true, attributeFilter: ['style']});
   }
 
   private recursiveSetParentStyle(element: CollapsibleContainerComponent) {
@@ -132,5 +154,8 @@ export class CollapsibleContainerComponent implements OnInit, OnChanges {
     }
   }
 
-  protected readonly animate = animate;
+  ngDoCheck(): void {
+  }
+
+
 }

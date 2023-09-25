@@ -10,20 +10,74 @@ $container-shadow-nested: none;
 $header-color: #a9a9fd;
 $header-color-nested: #bea9fd;
 
+$plus-button-color: #007bff;
+
 :host {
   display: block;
+  position: relative;
   padding: 0 0 0 0.1em;
+
+  // plus button
+  .plus-button {
+    width: 1.2em;
+    height: 1.2em;
+    background: $plus-button-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 1px solid $plus-button-color;
+    border-radius: 0.3em;
+  }
+
+  .vertical-line {
+    transform: rotate(0);
+  }
+
+  .horizontal-line {
+    transform: rotate(180deg);
+  }
+
+  .horizontal-line,
+  .vertical-line {
+    width: 0.7em;
+    height: 0.11em;
+    background-color: #fff;
+    position: absolute;
+  }
 
 }
 
 .collapsible-container {
   position: relative;
-  margin: 0.5em 0.3em;
-  border: 1px solid $header-color;
-  border-radius: 0.25em;
-  overflow: hidden;
   box-shadow: $container-shadow;
   background: $background-color;
+  border-radius: 0.25em;
+  border: 1px solid $header-color;
+  margin: 0.5em 0.3em;
+
+  &-header {
+    background: $header-color;
+    padding: 0.1em 0.2em;
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 1.6rem;
+    align-content: center;
+
+    &.nested {
+      background: $header-color-nested;
+    }
+
+    &-title {
+      display: inline-block;
+    }
+
+    &-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
 
   &-content {
     overflow: hidden;
@@ -34,30 +88,4 @@ $header-color-nested: #bea9fd;
       border: none;
     }
   }
-
-  &-header {
-    background: $header-color;
-    display: flex;
-    padding: 0.1em 0.4em;
-    align-items: center;
-
-    &.invalid {
-
-    }
-
-    &.nested {
-      background: $header-color-nested;
-    }
-
-    &-title {
-      display: inline-block;
-    }
-
-    &-content {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  }
-
 }
