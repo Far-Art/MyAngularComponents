@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, TemplateRef, ViewChild, ViewContainerRef} from '@angular/core';
+import {Component, Input, TemplateRef, ViewChild} from '@angular/core';
 
 
 @Component({
@@ -8,14 +8,7 @@ import {Component, ElementRef, Input, TemplateRef, ViewChild, ViewContainerRef} 
   standalone: true
 })
 export class OptionComponent {
-  // @ViewChild('content', {
-  //   read: ViewContainerRef,
-  //   static: true
-  // }) viewContainer!: ViewContainerRef;
-
-  @ViewChild('optionContent', {
-    static: true
-  }) content!: TemplateRef<HTMLElement>;
+  @ViewChild('optionContent', {static: true}) content!: TemplateRef<HTMLElement>;
 
   @Input() value: any;
 

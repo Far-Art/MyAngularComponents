@@ -1,6 +1,7 @@
-import {AfterContentInit, Component, ContentChildren, ElementRef, Input, OnInit, QueryList, ViewChild} from '@angular/core';
+import {Component, ContentChildren, ElementRef, HostListener, Input, QueryList, ViewChild} from '@angular/core';
 import {OptionComponent} from './option/option.component';
 import {NgForOf, NgIf, NgTemplateOutlet} from '@angular/common';
+import {ControlValueAccessor} from '@angular/forms';
 
 
 @Component({
@@ -14,7 +15,7 @@ import {NgForOf, NgIf, NgTemplateOutlet} from '@angular/common';
   ],
   standalone: true
 })
-export class SelectComponent implements OnInit, AfterContentInit {
+export class SelectComponent implements ControlValueAccessor{
 
   @ContentChildren(OptionComponent) options!: QueryList<OptionComponent>;
   @ViewChild('selectButton', {static: true}) selectButton!: ElementRef<HTMLButtonElement>;
@@ -30,12 +31,6 @@ export class SelectComponent implements OnInit, AfterContentInit {
   onChange: (value: any) => void = () => {};
   onTouched: () => void = () => {};
 
-  ngOnInit(): void {
-  }
-
-  ngAfterContentInit() {
-  }
-
   toggleDropdown() {
     this.isOpen = !this.isOpen;
     if (this.isOpen) {
@@ -48,6 +43,16 @@ export class SelectComponent implements OnInit, AfterContentInit {
     this.isOpen = false;
     this.onChange(option.value);
     this.onTouched();
+  }
+
+  @HostListener('keydown.ArrowUp')
+  cycleUp(): void {
+    console.log('up');
+  }
+
+  @HostListener('keydown.ArrowDown')
+  cycleDown(): void {
+    console.log('down');
   }
 
   writeValue(value: any): void {
@@ -68,7 +73,7 @@ export class SelectComponent implements OnInit, AfterContentInit {
   }
 
   setDisabledState(isDisabled: boolean): void {
-    // Implement if needed
+    // Implement
   }
 
 }
