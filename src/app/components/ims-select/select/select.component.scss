@@ -1,0 +1,60 @@
+.fa-select {
+  position: relative;
+  width: 200px;
+}
+
+button {
+  width: 100%;
+  padding: 8px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.arrow {
+  margin-left: 8px;
+  transition: transform 0.3s;
+}
+
+.arrow.open {
+  transform: rotate(180deg);
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-top: none;
+  background-color: white;
+  z-index: 1000;
+}
+
+.dropdown.open {
+  display: block;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+li {
+  padding: 8px;
+  cursor: pointer;
+}
+
+li:hover, li:focus {
+  background-color: #f0f0f0;
+}
+
+li.selected {
+  background-color: #e0e0e0;
+}

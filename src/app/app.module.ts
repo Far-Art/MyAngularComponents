@@ -14,6 +14,10 @@ import {DraggableTableComponent} from './components/draggable-table/draggable-ta
 import {MouseAllDirective} from './directives/mouse-all.directive';
 import {CollapsibleContainerComponent} from "./components/collapsible-container/collapsible-container.component";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { DatePickerComponent } from './components/date-picker/date-picker.component';
+import { DatePlaceholderPipe } from './components/date-picker/date-placeholder.pipe';
+import { SelectComponent } from './components/ims-select/select/select.component';
+import { OptionComponent } from './components/ims-select/select/option/option.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +29,11 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     CategoryViewComponent,
     DraggableTableComponent,
     MouseAllDirective,
-    CollapsibleContainerComponent
+    CollapsibleContainerComponent,
+    DatePickerComponent,
+    DatePlaceholderPipe,
+    SelectComponent,
+    OptionComponent
   ],
   imports: [
     BrowserModule,

@@ -1,10 +1,12 @@
 import {
+  AfterViewChecked,
   AfterViewInit,
   Component,
   DoCheck,
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Optional,
   Output,
@@ -20,16 +22,6 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
   animations: [
     // onContainerInit disables collapse/expand animation on first render to prevent unnecessary view jumping
     trigger('onContainerInit', [transition(':enter', [])]),
-    trigger('verticalLineRotate', [
-      state('false', style({transform: 'rotate(0)'})),
-      state('true', style({transform: 'rotate(-90deg)'})),
-      transition('true <=> false', animate(180)),
-    ]),
-    trigger('horizontalLineRotate', [
-      state('false', style({transform: 'rotate(180deg)'})),
-      state('true', style({transform: 'rotate(0)'})),
-      transition('true <=> false', animate(180)),
-    ]),
     trigger(
       'expandCollapse',
       [
@@ -48,10 +40,52 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
           ]
         )
       ]
-    )
+    ),
+    // TODO pay attention to true/ false values
+    trigger('verticalLineRotate', [
+      state('true', style({transform: 'rotateZ(90deg)'})),
+      state('false', style({transform: 'rotateZ(180deg)'})),
+      transition(
+        ':enter',
+        [
+          style({transform: 'rotateZ(90deg)'}),
+          animate(180, style({transform: 'rotateZ(180deg)'}))
+        ]
+      ),
+      transition(
+        ':leave',
+        [
+          style({transform: 'rotateZ(180deg)'}),
+          animate(180, style({transform: 'rotateZ(90deg)'}))
+        ]
+      ),
+      transition('* => true', animate(180)),
+      transition('* => false', animate(180))
+    ]),
+
+    trigger('horizontalLineRotate', [
+      state('true', style({transform: 'rotateZ(-180deg)'})),
+      state('false', style({transform: 'rotateZ(0deg)'})),
+      transition(
+        ':enter',
+        [
+          style({transform: 'rotateZ(-180deg)'}),
+          animate(180, style({transform: 'rotateZ(0deg)'}))
+        ]
+      ),
+      transition(
+        ':leave',
+        [
+          style({transform: 'rotateZ(-180deg)'}),
+          animate(180, style({transform: 'rotateZ(0deg)'}))
+        ]
+      ),
+      transition('* => true', animate(180)),
+      transition('* => false', animate(180))
+    ])
   ]
 })
-export class CollapsibleContainerComponent implements OnInit, OnChanges, AfterViewInit, DoCheck {
+export class CollapsibleContainerComponent implements OnInit, OnChanges, AfterViewInit, DoCheck, OnDestroy, AfterViewChecked {
 
   isCollapsedState: boolean;
   private readonly childList: CollapsibleContainerComponent[] = [];
@@ -79,6 +113,9 @@ export class CollapsibleContainerComponent implements OnInit, OnChanges, AfterVi
     }
   }
 
+  ngOnDestroy(): void {
+  }
+
   ngOnInit(): void {
     if (this.expanded != null) {
       this.setState(!this.expanded);
@@ -93,13 +130,16 @@ export class CollapsibleContainerComponent implements OnInit, OnChanges, AfterVi
   ngAfterViewInit(): void {
   }
 
+  ngAfterViewChecked(): void {
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['expanded']) {
       this.setState(!changes['expanded'].currentValue);
     } else if (changes['collapsed']) {
       this.setState(changes['collapsed'].currentValue);
     } else if (changes['invalid']) {
-      // this.recursiveSetParentStyle(this);
+      this.recursiveSetParentStyle(this);
     }
   }
 

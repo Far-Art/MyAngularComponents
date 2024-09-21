@@ -1,0 +1,10 @@
+label {
+  position: relative;
+}
+label .date-value {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/*# sourceMappingURL=date-picker.component.css.map */

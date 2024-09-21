@@ -1,0 +1,29 @@
+:host {
+  display: flex;
+  width: 100%;
+
+  &:hover[nested=false] {
+    background: brown;
+  }
+
+  &:hover[nested=true] {
+    background: none;
+  }
+
+  &[elementType='ROW-HEADER'] {
+    &:hover {
+      background: none;
+    }
+  }
+
+  &[elementType='ROW-DATA'] {
+  }
+
+  &[elementType='ROW-TABLE'] {
+    &:hover {
+      background: none;
+    }
+  }
+
+}
+

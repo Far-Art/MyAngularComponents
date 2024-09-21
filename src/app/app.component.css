@@ -5,16 +5,9 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-
-.test-outline {
-  //background: red;
-  //border: 2px red solid;
-  //box-shadow: 0 0 0 1px red;
-  //outline: rgba(255, 0, 0 ,0.2) solid 1em;
-}
+/*# sourceMappingURL=app.component.css.map */

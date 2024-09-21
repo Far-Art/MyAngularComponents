@@ -1,0 +1,12 @@
+<ng-container *ngIf="elementType === 'ROW-HEADER'">
+  <ng-content select="ims-th"></ng-content>
+</ng-container>
+
+<ng-container *ngIf="elementType === 'ROW-DATA'">
+  <ng-content select="ims-td"></ng-content>
+</ng-container>
+
+<ng-container *ngIf="elementType === 'ROW-TABLE'">
+  <ng-content select="ims-table"></ng-content>
+</ng-container>
+

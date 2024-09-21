@@ -3,13 +3,11 @@
     <tbody>
     <tr *ngFor="let elem of content"
         [attr.dragging]="isHolding && draggingContent.includes(elem)"
-        (mousedown)="addElementToDragging(elem)"
-        (mousedown)="clickOnElement($event,elem)"
+        (mousedown)="addElementToDragging(elem); clickOnElement($event,elem)"
         (mouseup)="dropElement($event, elem)"
         (mousemove)="draggingEvent($event)"
         (mouseenter)="swapElements(elem)"
-        [class.content-dragging]="draggingContent.includes(elem)"
-    >
+        [class.content-dragging]="draggingContent.includes(elem)">
       <td>{{elem}}</td>
     </tr>
     </tbody>

@@ -1,0 +1,11 @@
+:host {
+  display: block;
+  padding: 8px;
+  cursor: pointer;
+}
+
+:host:hover, :host:focus {
+  background-color: #f0f0f0;
+}
+
+/*# sourceMappingURL=option.component.css.map */
