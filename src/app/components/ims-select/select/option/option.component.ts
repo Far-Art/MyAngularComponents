@@ -1,13 +1,21 @@
-import {Component, Input, TemplateRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, TemplateRef, ViewChild, ViewContainerRef} from '@angular/core';
 
 
 @Component({
   selector: 'fa-option',
   templateUrl: './option.component.html',
-  styleUrls: ['./option.component.scss']
+  styleUrls: ['./option.component.scss'],
+  standalone: true
 })
 export class OptionComponent {
-  @ViewChild('content', {static: true}) content!: TemplateRef<HTMLElement>;
+  // @ViewChild('content', {
+  //   read: ViewContainerRef,
+  //   static: true
+  // }) viewContainer!: ViewContainerRef;
+
+  @ViewChild('optionContent', {
+    static: true
+  }) content!: TemplateRef<HTMLElement>;
 
   @Input() value: any;
 

@@ -1,27 +1,3 @@
-<!--<div class="fa-select" [attr.aria-label]="label">-->
-<!--  <button-->
-<!--      #selectButton-->
-<!--      type="button"-->
-<!--      aria-haspopup="true"-->
-<!--      [attr.aria-expanded]="isOpen"-->
-<!--      (click)="toggleDropdown()">-->
-<!--    <ng-container *ngIf="selectedOption; else placeholderTmpl">-->
-<!--      <ng-container *ngTemplateOutlet="selectedOption.content"></ng-container>-->
-<!--    </ng-container>-->
-<!--    <ng-template #placeholderTmpl>{{ placeholder }}</ng-template>-->
-<!--  </button>-->
-<!--  <ul *ngIf="isOpen" role="listbox">-->
-<!--    <li *ngFor="let option of options"-->
-<!--        tabindex="0"-->
-<!--        role="option"-->
-<!--        [attr.aria-selected]="option === selectedOption"-->
-<!--        (click)="selectOption(option)"-->
-<!--        (keydown.enter)="selectOption(option)">-->
-<!--      <ng-container *ngTemplateOutlet="option.content"></ng-container>-->
-<!--    </li>-->
-<!--  </ul>-->
-<!--</div>-->
-
 <div class="fa-select" [attr.aria-label]="label">
   <button
       #selectButton
@@ -30,11 +6,8 @@
       [attr.aria-expanded]="isOpen"
       (click)="toggleDropdown()"
   >
-    <ng-container *ngIf="selectedOption; else placeholderTmpl">
-      <ng-container *ngTemplateOutlet="selectedOption.content"></ng-container>
-    </ng-container>
-    <ng-template #placeholderTmpl>{{ placeholder }}</ng-template>
-
+    <ng-template #valueTmpl>{{ selectedOption?.value || placeholder }}</ng-template>
+    <ng-container *ngTemplateOutlet="valueTmpl"></ng-container>
     <span class="arrow" [class.open]="isOpen">▼</span>
   </button>
   <div class="dropdown" [class.open]="isOpen">

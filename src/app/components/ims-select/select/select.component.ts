@@ -1,20 +1,23 @@
-import {AfterContentInit, Component, ContentChildren, ElementRef, Input, OnInit, QueryList, ViewChild, ViewContainerRef} from '@angular/core';
+import {AfterContentInit, Component, ContentChildren, ElementRef, Input, OnInit, QueryList, ViewChild} from '@angular/core';
 import {OptionComponent} from './option/option.component';
+import {NgForOf, NgIf, NgTemplateOutlet} from '@angular/common';
 
 
 @Component({
   selector: 'fa-select',
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss'],
+  imports: [
+    NgIf,
+    NgForOf,
+    NgTemplateOutlet
+  ],
+  standalone: true
 })
 export class SelectComponent implements OnInit, AfterContentInit {
 
   @ContentChildren(OptionComponent) options!: QueryList<OptionComponent>;
   @ViewChild('selectButton', {static: true}) selectButton!: ElementRef<HTMLButtonElement>;
-  // @ViewChild('selectedContent', {
-  //   read: ViewContainerRef,
-  //   static: true
-  // }) selectedContent!: ViewContainerRef;
 
   @Input() placeholder: string = 'Select an option';
   @Input() label: string = 'Custom Select';
