@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ProductModel} from "../../../models/Product.model";
-import {FormControl} from "@angular/forms";
+import {UntypedFormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-add-product',
@@ -12,7 +12,7 @@ export class AddProductComponent implements OnInit {
   constructor() {
   }
 
-  name = new FormControl('');
+  name = new UntypedFormControl('');
 
   @Input()
   product!: ProductModel;
