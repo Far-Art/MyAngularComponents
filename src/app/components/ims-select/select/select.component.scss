@@ -52,28 +52,33 @@ li {
   font-optical-sizing: auto;
   padding: 8px;
   cursor: pointer;
-  transition: transform 250ms ease-out, background-color 250ms ease-out;
+  transition: transform 150ms ease-in, background-color 250ms ease-out, color 250ms ease-out;
   font-weight: 500;
   text-transform: capitalize;
+  color: #6f7488;
+}
+
+li.selected {
+  background-color: #eeeeff;
+  color: black;
 }
 
 li:hover, li:focus {
   background-color: #f0f0f0;
+  color: black;
 }
 
 li:hover, li:focus {
-  transform: scale(1.08) translate(3%);
+  transform: scale(1.08) translate(6%);
   background-color: #e6e6ff;
 }
 
 li:hover + li, li:focus + li, li:has(+ li:hover), li:has(+ li:focus) {
-  transform: scale(1.04) translate(2%);
+  transform: scale(1) translate(2%);
 }
+
 
 li:active {
-  background-color: #dadada;
-}
-
-li.selected {
-  background-color: #e0e0e0;
+  background-color: #cacae3;
+  transition: background-color 50ms ease-in;
 }
