@@ -13,6 +13,7 @@
   <div class="dropdown" [class.open]="isOpen">
     <ul *ngIf="isOpen" role="listbox">
       <li *ngFor="let option of options"
+          #optionItem
           role="option"
           [attr.aria-selected]="option === selectedOption"
           (click)="selectOption(option)"
