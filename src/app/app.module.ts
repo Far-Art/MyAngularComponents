@@ -1,17 +1,22 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {EllipsisDirective} from './directives/ellipsis.directive';
+import {AutocompleteComponent} from './components/autocomplete/autocomplete.component';
+import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
 @NgModule({
   declarations: [
-    EllipsisDirective
+    EllipsisDirective,
+    AutocompleteComponent
   ],
   exports: [
-    EllipsisDirective
+    EllipsisDirective,
+    AutocompleteComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
   ]
 })
 export class AppModule {}

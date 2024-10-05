@@ -1,0 +1,34 @@
+.autocomplete-container {
+  position: relative;
+}
+
+.input-container {
+  position: relative;
+}
+
+.autocomplete-content {
+  position: absolute;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 100%;
+  background: #bea9fd;
+  border-radius: 10px;
+  transition: top 300ms ease-in-out, height 300ms ease-in-out;
+
+  > p {
+    margin: 0;
+
+    &.selected {
+      background: antiquewhite;
+    }
+  }
+}
+
+label {
+  display: flex;
+  align-items: center;
+}
+
+input {
+  height: 30px;
+}

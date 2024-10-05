@@ -1,0 +1,25 @@
+<div class="autocomplete-container">
+  <label>
+    <ng-content></ng-content>
+    <div class="input-container">
+      <input [attr.aria-activedescendant]="selectedItemId" #inputElement (input)="onValueChange($event)" (focus)="onInputFocus()" (blur)="onInputBlur()" [value]="value"
+             [placeholder]="placeholder">
+      <div role="listbox" *ngIf="showAutocomplete" class="autocomplete-content">
+        <p *ngFor="let item of filteredAutocomplete; let i = index;"
+           role="option"
+           tabindex="-1"
+           (mouseover)="markAsSelectedOptionItem(i)"
+           [id]="'option__' + i"
+           [class.selected]="i === selectedItemIndex"
+           [attr.aria-selected]="i === selectedItemIndex"
+           #autocompleteItem
+           (click)="onItemClick(i)"
+        >{{ item }}</p>
+      </div>
+    </div>
+  </label>
+  <!--  <div class="errors">-->
+  <!--    <div>error1</div>-->
+  <!--    <div>error2</div>-->
+  <!--  </div>-->
+</div>

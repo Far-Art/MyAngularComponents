@@ -19,3 +19,25 @@
   //box-shadow: 0 0 0 1px red;
   //outline: rgba(255, 0, 0 ,0.2) solid 1em;
 }
+
+table {
+  max-width: 740px;
+  font-size: 14px;
+  border-collapse: collapse;
+  text-wrap: balance;
+
+  td, th {
+    padding: 2px 6px;
+  }
+
+  th {
+    background: #f0f0f0;
+    border: 1px solid grey;
+    font-size: 12px;
+  }
+
+  td {
+    border: 1px solid grey;
+  }
+}
+
