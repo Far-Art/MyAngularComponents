@@ -131,19 +131,14 @@ export class AutocompleteComponent implements OnInit {
       const minMenuHeight = 100;
       const maxMenuHeight = 300;
 
-      // TODO check how rect.y calculated
-      const topSpace = Math.floor(contentRect.bottom);
-      const bottomSpace = Math.floor(window.innerHeight - contentRect.y);
+      const topSpace = Math.floor(inputRect.top);
+      const bottomSpace = Math.floor(window.innerHeight - inputRect.bottom);
 
-      console.log('top', topSpace)
-      // console.log('bottom',bottomSpace)
-
-      const hasSpaceTop = minMenuHeight < window.innerHeight;
-      const hasSpaceBottom = contentRect.y + minMenuHeight < window.innerHeight;
+      const hasSpaceTop = minMenuHeight > bottomSpace && topSpace > bottomSpace;
       let menuHeight: number;
-      if (hasSpaceTop && !hasSpaceBottom) {
+      if (hasSpaceTop) {
         // go above input
-        menuHeight = Math.min(Math.max(window.innerHeight - contentRect.y - margin, minMenuHeight), maxMenuHeight);
+        menuHeight = Math.max(Math.min(inputRect.top - margin, maxMenuHeight), minMenuHeight);
         this.renderer.setStyle(content, 'top', `-${menuHeight}px`);
       } else {
         // go below input
