@@ -1,5 +1,6 @@
 import {Component, ElementRef, HostListener, Input, OnInit, QueryList, Renderer2, Self, ViewChild, ViewChildren} from '@angular/core';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import {animate, style, transition, trigger} from '@angular/animations';
+import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 
 
 @Component({
@@ -42,11 +43,13 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 })
 export class AutocompleteComponent implements OnInit {
 
-  @ViewChildren('autocompleteItem') autocompleteItems!: QueryList<ElementRef<HTMLParagraphElement>>;
+  @ViewChildren('autocompleteItem') autocompleteElementsList!: QueryList<ElementRef<HTMLParagraphElement>>;
 
   @ViewChild('inputElement', {static: true}) inputElement!: ElementRef<HTMLInputElement>;
 
-  autocompleteList: string[] = ['data 1', 'data 2', 'data 3', 'data 4', 'data 5', 'data 6', 'data 7', 'data 8', 'data9', 'data10', 'data11', 'data12', 'data13', 'data14', 'data15', 'data16', 'data17', 'data18', 'data19', 'data20', 'data21'];
+  @ViewChild(CdkVirtualScrollViewport) viewport!: CdkVirtualScrollViewport;
+
+  autocompleteList: string[] = [];
   filteredAutocomplete: string[] = [];
 
   @Input() placeholder: string | undefined;
@@ -55,7 +58,7 @@ export class AutocompleteComponent implements OnInit {
 
   showAutocomplete = false;
 
-  value: any = '';
+  value: string = '';
 
   selectedItemIndex = -1;
   selectedItemId: string | null = null;
@@ -63,6 +66,9 @@ export class AutocompleteComponent implements OnInit {
   constructor(@Self() private elRef: ElementRef<HTMLElement>, private renderer: Renderer2) {}
 
   ngOnInit(): void {
+    for (let i = 0; i < 999999; i++) {
+      this.autocompleteList.push('some data ' + i);
+    }
     this.filteredAutocomplete = this.autocompleteList;
   }
 
@@ -90,25 +96,45 @@ export class AutocompleteComponent implements OnInit {
     this.markAsSelectedOptionItem(0);
   }
 
-  markAsSelectedOptionItem(index: number) {
+  markAsSelectedOptionItem(index: number, scroll: boolean = true) {
     setTimeout(() => {
       this.selectedItemIndex = this.filteredAutocomplete?.length ? index : -1;
-      const el = this.autocompleteItems.get(index)?.nativeElement;
+      const el = this.autocompleteElementsList.get(index)?.nativeElement;
       this.selectedItemId = el?.id || null;
-      el?.scrollIntoView({block: 'nearest'});
+
+      if (scroll) {
+        const viewportOffset = this.viewport.measureScrollOffset();
+        const viewportSize = this.viewport.getViewportSize();
+        const itemSize = this.autocompleteElementsList.first.nativeElement.getBoundingClientRect().height;
+
+        const itemTopPosition = index * itemSize;
+        const itemBottomPosition = itemTopPosition + itemSize;
+        const totalVisibleItems = viewportSize / itemSize;
+
+        // Check if the item is outside the visible area
+        if (itemTopPosition < viewportOffset) {
+          this.viewport.scrollToIndex(index, 'smooth');
+        } else if (itemBottomPosition > (viewportOffset + viewportSize)) {
+          this.viewport.scrollToIndex(index - Math.floor(totalVisibleItems) + 1, 'smooth');
+        }
+      }
     });
   }
 
   @HostListener('keydown', ['$event'])
   onKeyDown(e: KeyboardEvent) {
-    if (this.showAutocomplete && this.autocompleteItems?.length) {
+    if (this.showAutocomplete && this.autocompleteElementsList?.length) {
       const key = e.key;
       if (key === 'ArrowDown') {
         e.preventDefault();
-        this.markAsSelectedOptionItem(++this.selectedItemIndex);
+        if (this.selectedItemIndex < this.filteredAutocomplete.length - 1) {
+          this.markAsSelectedOptionItem(++this.selectedItemIndex);
+        }
       } else if (key === 'ArrowUp') {
         e.preventDefault();
-        this.markAsSelectedOptionItem(--this.selectedItemIndex);
+        if (this.selectedItemIndex > 0) {
+          this.markAsSelectedOptionItem(--this.selectedItemIndex);
+        }
       } else if (key === 'Enter') {
         e.preventDefault();
         this.onItemClick(this.selectedItemIndex);
@@ -149,13 +175,20 @@ export class AutocompleteComponent implements OnInit {
     }
   }
 
+  getBoldText(value: string): string {
+    if (!value) return value;
+    const searchList = this.value.split(/\s/).filter(v => !!v);
+    return searchList.reduce((accumulator, current) => accumulator.replace(current, `<b>${current}</b>`), value);
+  }
+
   private filterItems() {
     this.showAutocomplete = !!this.autocompleteList?.length;
     if (this.autocompleteList?.length) {
-      this.filteredAutocomplete = this.autocompleteList.filter(item => item.includes(this.value));
+
+      const searchList = this.value.split(/\s/).filter(v => !!v);
+      this.filteredAutocomplete = this.autocompleteList.filter(item => searchList.every(val => item.includes(val)));
       setTimeout(() => {
         this.onResize();
-        this.autocompleteItems.forEach(item => item.nativeElement.innerHTML = item.nativeElement.innerText.replace(this.value, `<strong>${this.value}</strong>`));
       });
     }
   }

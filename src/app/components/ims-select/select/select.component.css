@@ -13,6 +13,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  text-transform: capitalize;
 }
 
 .arrow {
@@ -49,6 +50,8 @@ ul {
 }
 
 li {
+  font-size: 0.9em;
+  position: relative;
   font-optical-sizing: auto;
   padding: 8px;
   cursor: pointer;
@@ -63,18 +66,18 @@ li.selected {
   color: black;
 }
 
-li:hover, li:focus {
-  background-color: #f0f0f0;
+li:hover, li:focus-visible, li:focus-within {
+  background-color: #dbdbff;
   color: black;
+  z-index: 1;
 }
 
-li:hover, li:focus {
-  transform: scale(1.08) translate(6%);
-  background-color: #e6e6ff;
+li:hover + li, li:focus-visible + li, li:has(+ li:hover), li:has(+ li:focus-visible) {
+  transform: translate(2%);
 }
 
-li:hover + li, li:focus + li, li:has(+ li:hover), li:has(+ li:focus) {
-  transform: scale(1) translate(2%);
+li:hover, li:focus-visible, li:focus-within, li.selected {
+  transform: scale(1.08) translate(6%) !important;
 }
 
 li:active {

@@ -14,14 +14,12 @@
   background: #bea9fd;
   border-radius: 10px;
   transition: top 300ms ease-in-out;
-
-  p {
-    margin: 0;
-
-    &.selected {
-      background: antiquewhite;
-    }
-  }
+}
+.autocomplete-content p {
+  margin: 0;
+}
+.autocomplete-content p.selected {
+  background: antiquewhite;
 }
 
 label {
@@ -32,3 +30,5 @@ label {
 input {
   height: 30px;
 }
+
+/*# sourceMappingURL=autocomplete.component.css.map */

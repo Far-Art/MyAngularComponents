@@ -4,17 +4,20 @@
     <div class="input-container">
       <input [attr.aria-activedescendant]="selectedItemId" #inputElement (input)="onValueChange($event)" (focus)="onInputFocus()" (blur)="onInputBlur()" [value]="value"
              [placeholder]="placeholder">
-      <div role="listbox" *ngIf="showAutocomplete" class="autocomplete-content">
-        <p *ngFor="let item of filteredAutocomplete; let i = index;"
-           role="option"
-           tabindex="-1"
-           (mouseover)="markAsSelectedOptionItem(i)"
-           [id]="'option__' + i"
-           [class.selected]="i === selectedItemIndex"
-           [attr.aria-selected]="i === selectedItemIndex"
-           #autocompleteItem
-           (click)="onItemClick(i)"
-        >{{ item }}</p>
+      <div role="listbox" *ngIf="showAutocomplete">
+        <cdk-virtual-scroll-viewport class="autocomplete-content" itemSize="22" style="height: 300px">
+          <p *cdkVirtualFor="let item of filteredAutocomplete; let i = index"
+             role="option"
+             tabindex="-1"
+             (mouseover)="markAsSelectedOptionItem(i, false)"
+             [id]="'option__' + i"
+             [class.selected]="i === selectedItemIndex"
+             [attr.aria-selected]="i === selectedItemIndex"
+             [innerHTML]="getBoldText(item)"
+             #autocompleteItem
+             (click)="onItemClick(i)"
+          >{{ item }}</p>
+        </cdk-virtual-scroll-viewport>
       </div>
     </div>
   </label>
