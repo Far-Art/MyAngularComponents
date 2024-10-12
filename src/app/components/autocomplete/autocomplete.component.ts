@@ -1,45 +1,11 @@
 import {Component, ElementRef, HostListener, Input, OnInit, QueryList, Renderer2, Self, ViewChild, ViewChildren} from '@angular/core';
-import {animate, style, transition, trigger} from '@angular/animations';
 import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 
 
 @Component({
   selector: 'fa-autocomplete',
   templateUrl: './autocomplete.component.html',
-  styleUrls: ['./autocomplete.component.scss'],
-  animations: [
-    trigger(
-        'fadeInOut',
-        [
-          transition(
-              ':enter',
-              [
-                style({
-                  height: '0',
-                  opacity: 0
-                }),
-                animate(280, style({
-                  height: '*',
-                  opacity: 1
-                }))
-              ]
-          ),
-          transition(
-              ':leave',
-              [
-                style({
-                  height: '*',
-                  opacity: 1
-                }),
-                animate(280, style({
-                  height: '0',
-                  opacity: 0
-                }))
-              ]
-          )
-        ]
-    )
-  ]
+  styleUrls: ['./autocomplete.component.scss']
 })
 export class AutocompleteComponent implements OnInit {
 
@@ -74,7 +40,7 @@ export class AutocompleteComponent implements OnInit {
 
   onItemClick(index: number) {
     this.value = this.filteredAutocomplete[index];
-    this.showAutocomplete = false;
+    setTimeout(() => this.showAutocomplete = false);
   }
 
   onInputFocus() {
@@ -83,7 +49,6 @@ export class AutocompleteComponent implements OnInit {
 
   onInputBlur() {
     setTimeout(() => {
-      // TODO check this
       if (!this.elRef.nativeElement.contains(document.activeElement)) {
         this.showAutocomplete = false;
       }
@@ -102,7 +67,7 @@ export class AutocompleteComponent implements OnInit {
       const el = this.autocompleteElementsList.get(index)?.nativeElement;
       this.selectedItemId = el?.id || null;
 
-      if (scroll) {
+      if (scroll && this.selectedItemIndex > -1) {
         const viewportOffset = this.viewport.measureScrollOffset();
         const viewportSize = this.viewport.getViewportSize();
         const itemSize = this.autocompleteElementsList.first.nativeElement.getBoundingClientRect().height;
@@ -113,9 +78,9 @@ export class AutocompleteComponent implements OnInit {
 
         // Check if the item is outside the visible area
         if (itemTopPosition < viewportOffset) {
-          this.viewport.scrollToIndex(index, 'smooth');
+          this.viewport.scrollToIndex(index);
         } else if (itemBottomPosition > (viewportOffset + viewportSize)) {
-          this.viewport.scrollToIndex(index - Math.floor(totalVisibleItems) + 1, 'smooth');
+          this.viewport.scrollToIndex(index - Math.floor(totalVisibleItems) + 1);
         }
       }
     });
