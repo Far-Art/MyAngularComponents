@@ -5,13 +5,19 @@ import {CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport, Sc
 import {AppComponent} from './app.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { CheckboxComponent } from './components/checkbox/checkbox.component';
+import { RadioComponent } from './components/radio/radio-button/radio.component';
+import { RadioGroupComponent } from './components/radio/radio-group/radio-group.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     EllipsisDirective,
-    AutocompleteComponent
+    AutocompleteComponent,
+    CheckboxComponent,
+    RadioComponent,
+    RadioGroupComponent
   ],
   exports: [
     EllipsisDirective,
