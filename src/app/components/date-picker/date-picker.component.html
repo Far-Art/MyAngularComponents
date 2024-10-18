@@ -2,27 +2,7 @@
   <input #dateInput
          [value]="formattedDate"
          (input)="onInput($event)"
-         (click)="setCaret()"
+         (focus)="onFocus($event)"
   >
-<!--  <span>{{day}}</span>/-->
-<!--  <span>{{month}}</span>/-->
-<!--  <span>{{year}}</span>-->
-
-  <input [value]="day"
-         [min]="dateConst.day.min"
-         [max]="dateConst.day.max"
-         [attr.maxlength]="dateConst.day.len"
-  >/
-  <input [value]="month"
-         [min]="dateConst.month.min"
-         [max]="dateConst.month.max"
-         [attr.maxlength]="dateConst.month.len"
-  >/
-  <input [value]="year"
-         [min]="dateConst.year.min"
-         [max]="dateConst.year.max"
-         [attr.maxlength]="dateConst.year.len"
-  >
-<!--  <span class="date-value">{{value | datePlaceholder}}</span>-->
   <span><ng-content></ng-content></span>
 </label>

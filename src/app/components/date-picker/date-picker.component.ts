@@ -73,4 +73,9 @@ export class DatePickerComponent implements OnInit {
     }
   }
 
+  onFocus(event: FocusEvent): void {
+    event.preventDefault();
+    this.setCaret();
+  }
+
 }

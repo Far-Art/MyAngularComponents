@@ -1,0 +1,27 @@
+:host {
+  --size: 20px;
+}
+:host label {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+:host label input {
+  cursor: pointer;
+  appearance: none;
+  border: 1px solid grey;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 100px;
+  transition: box-shadow 60ms ease-in-out;
+  margin: 0 0.2rem;
+}
+:host label input:hover {
+  box-shadow: 0 0 0 0.5rem rgba(0, 0, 0, 0.2);
+}
+:host label input:checked {
+  background: #d0d0d0;
+}
+
+/*# sourceMappingURL=radio.component.css.map */
