@@ -1,7 +1,6 @@
 <label>
   <input #dateInput
          [value]="formattedValue"
-         (input)="onInput($any($event))"
          (focus)="onFocus($event)"
          (selectionchange)="onSelectionChange($any($event.target))"
   >
