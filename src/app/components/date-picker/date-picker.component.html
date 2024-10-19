@@ -1,8 +1,9 @@
 <label>
   <input #dateInput
-         [value]="formattedDate"
-         (input)="onInput($event)"
+         [value]="formattedValue"
+         (input)="onInput($any($event))"
          (focus)="onFocus($event)"
+         (selectionchange)="onSelectionChange($any($event.target))"
   >
   <span><ng-content></ng-content></span>
 </label>
