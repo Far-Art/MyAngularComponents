@@ -8,6 +8,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { RadioComponent } from './components/radio/radio-button/radio.component';
 import { RadioGroupComponent } from './components/radio/radio-group/radio-group.component';
+import {DatePickerComponent} from './components/date-picker/date-picker.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { RadioGroupComponent } from './components/radio/radio-group/radio-group.
     AutocompleteComponent,
     CheckboxComponent,
     RadioComponent,
-    RadioGroupComponent
+    RadioGroupComponent,
+    DatePickerComponent
   ],
   exports: [
     EllipsisDirective,
