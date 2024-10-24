@@ -55,13 +55,12 @@
 
       &:checked {
         border-color: #684bca;
+        transform: scale(1.1);
+        box-shadow: var(--local-border-shadow-elevated), var(--local-border-shadow-deactive), inset 0 0 0 0rem #fff, inset 0 0 0 1rem #7464a6;
 
         &:after {
           border-color: #fff;
         }
-
-        transform: scale(1.1);
-        box-shadow: var(--local-border-shadow-elevated), var(--local-border-shadow-deactive), inset 0 0 0 0rem #fff, inset 0 0 0 1rem #7464a6;
       }
 
       &:focus-visible {
