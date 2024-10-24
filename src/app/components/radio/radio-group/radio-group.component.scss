@@ -1,0 +1,12 @@
+fieldset {
+  appearance: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+
+  legend {
+    height: 0;
+    opacity: 0;
+    width: 0;
+  }
+}

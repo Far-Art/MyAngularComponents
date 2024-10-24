@@ -1,5 +1,5 @@
 :host {
-  --size: 20px;
+  --size: 18px;
 }
 :host label {
   display: inline-flex;
@@ -7,21 +7,47 @@
   cursor: pointer;
   user-select: none;
 }
-:host label input {
+:host label input[type=radio] {
+  --local-border-shadow-laying: 0 2px 4px 0 rgb(0, 0, 0, 0.2);
+  --local-border-shadow-hover: 0 0 0 0.3rem rgba(100, 70, 160, 0.3);
+  --local-border-shadow-active: 0 0 0 0.1rem rgba(100, 70, 160, 0.18);
+  --local-border-shadow-elevated: 0 4px 8px 0 rgb(0, 0, 0, 0.16);
+  --local-border-shadow-deactive: 0 0 0 0 #fff;
+  --local-border-shadow-inset-deactive: inset 0 0 0 0 #fff;
+  --animation-speed: 280ms;
   cursor: pointer;
+  border: 1px solid #bab5c5;
   appearance: none;
-  border: 1px solid grey;
+  background: #fff;
   width: var(--size);
   height: var(--size);
+  min-width: var(--size);
+  min-height: var(--size);
   border-radius: 100px;
-  transition: box-shadow 60ms ease-in-out;
   margin: 0 0.2rem;
+  box-shadow: var(--local-border-shadow-laying), var(--local-border-shadow-deactive);
+  transition: box-shadow var(--animation-speed) ease-in-out;
+  outline: none;
 }
-:host label input:hover {
-  box-shadow: 0 0 0 0.5rem rgba(0, 0, 0, 0.2);
+:host label input[type=radio]:focus-visible {
+  transition: box-shadow 0s linear;
 }
-:host label input:checked {
-  background: #d0d0d0;
+:host label input[type=radio]:hover {
+  box-shadow: var(--local-border-shadow-laying), var(--local-border-shadow-hover);
+}
+:host label input[type=radio]:active {
+  box-shadow: var(--local-border-shadow-laying), var(--local-border-shadow-active);
+}
+:host label input[type=radio]:checked {
+  border-color: #684bca;
+  box-shadow: var(--local-border-shadow-elevated), var(--local-border-shadow-deactive), inset 0 0 0 0.25rem #fff, inset 0 0 0 1rem #7464a6;
+}
+:host label input[type=radio]:focus-visible {
+  transition: box-shadow 0s linear;
+  box-shadow: var(--local-border-shadow-laying), var(--local-border-shadow-hover);
+}
+:host label input[type=radio]:focus-visible:checked {
+  box-shadow: var(--local-border-shadow-laying), var(--local-border-shadow-hover), inset 0 0 0 0.25rem #fff, inset 0 0 0 1rem #7464a6;
 }
 
 /*# sourceMappingURL=radio.component.css.map */

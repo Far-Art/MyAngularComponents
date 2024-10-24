@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 
 @Component({
@@ -6,8 +6,16 @@ import {Component, Input} from '@angular/core';
   templateUrl: './radio.component.html',
   styleUrls: ['./radio.component.scss']
 })
-export class RadioComponent {
+export class RadioComponent<T = any> {
 
   @Input() name: string | null = null;
+  @Input() value: T | null = null;
+  @Output() onSelected = new EventEmitter<T | null>();
+
+  constructor() {}
+
+  onChange() {
+    this.onSelected.emit(this.value);
+  }
 
 }

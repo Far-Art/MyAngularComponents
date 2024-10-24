@@ -27,7 +27,7 @@
       border-radius: calc(var(--size) / 4);
       margin: 0 0.2rem;
       box-shadow: var(--local-border-shadow-laying), var(--local-border-shadow-deactive);
-      transition: box-shadow var(--animation-speed) ease-in-out, transform var(--animation-speed) ease-in-out, border-color var(--animation-speed) ease-in-out;
+      transition: box-shadow var(--animation-speed) ease-in-out, border-color var(--animation-speed) ease-in-out;
       outline: none;
 
       &:after {
@@ -55,7 +55,6 @@
 
       &:checked {
         border-color: #684bca;
-        transform: scale(1.1);
         box-shadow: var(--local-border-shadow-elevated), var(--local-border-shadow-deactive), inset 0 0 0 0rem #fff, inset 0 0 0 1rem #7464a6;
 
         &:after {

@@ -27,7 +27,7 @@
       border-radius: 100px;
       margin: 0 0.2rem;
       box-shadow: var(--local-border-shadow-laying), var(--local-border-shadow-deactive);
-      transition: box-shadow var(--animation-speed) ease-in-out, transform var(--animation-speed) ease-in-out;
+      transition: box-shadow var(--animation-speed) ease-in-out;
       outline: none;
 
       &:focus-visible {
@@ -43,7 +43,6 @@
       }
 
       &:checked {
-        transform: scale(1.1);
         border-color: #684bca;
         box-shadow: var(--local-border-shadow-elevated), var(--local-border-shadow-deactive), inset 0 0 0 0.25rem #fff, inset 0 0 0 1rem #7464a6;
       }

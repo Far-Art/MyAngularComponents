@@ -16,4 +16,8 @@ export class AppComponent implements AfterViewInit {
 
   }
 
+  onValueChange(event: Event) {
+    console.log(event);
+  }
+
 }
