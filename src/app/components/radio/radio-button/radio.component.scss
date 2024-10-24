@@ -22,6 +22,8 @@
       background: #fff;
       width: var(--size);
       height: var(--size);
+      min-width: var(--size);
+      min-height: var(--size);
       border-radius: 100px;
       margin: 0 0.2rem;
       box-shadow: var(--local-border-shadow), var(--local-border-shadow-laying), var(--local-border-shadow-deactive);
