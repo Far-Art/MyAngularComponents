@@ -9,7 +9,7 @@ import {Subscription} from 'rxjs';
   templateUrl: './radio-group.component.html',
   styleUrls: ['./radio-group.component.scss']
 })
-export class RadioGroupComponent<T = any> implements AfterContentInit, OnDestroy {
+export class RadioGroupComponent<T = string> implements AfterContentInit, OnDestroy {
 
   @Output('selectedValue') radioOutput = new EventEmitter<T | null>();
   @Input() name: string = IdGenerator.generate();

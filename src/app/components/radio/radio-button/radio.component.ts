@@ -6,7 +6,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
   templateUrl: './radio.component.html',
   styleUrls: ['./radio.component.scss']
 })
-export class RadioComponent<T = any> {
+export class RadioComponent<T = string> {
 
   @Input() name: string | null = null;
   @Input() value: T | null = null;

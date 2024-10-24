@@ -1,4 +1,4 @@
 <label>
   <span><ng-content></ng-content></span>
-  <input [value]="value" type="checkbox">
+  <input #checkboxElement (change)="onChange()" [value]="value" type="checkbox">
 </label>
