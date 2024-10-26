@@ -1,0 +1,20 @@
+<button
+    type="button"
+    role="combobox"
+    [attr.aria-expanded]="dropdownOpen"
+    aria-haspopup="listbox"
+    class="select-box"
+    cdkOverlayOrigin
+    #trigger="cdkOverlayOrigin"
+    (click)="onClick()"
+>
+  Select
+</button>
+<ng-template
+    cdkConnectedOverlay
+    [cdkConnectedOverlayOrigin]="trigger"
+    [cdkConnectedOverlayOpen]="dropdownOpen">
+  <div role="listbox" class="dropdown">
+    <ng-content></ng-content>
+  </div>
+</ng-template>

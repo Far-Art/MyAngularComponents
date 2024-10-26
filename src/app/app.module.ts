@@ -9,6 +9,9 @@ import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { RadioComponent } from './components/radio/radio-button/radio.component';
 import { RadioGroupComponent } from './components/radio/radio-group/radio-group.component';
 import {DatePickerComponent} from './components/date-picker/date-picker.component';
+import { FaSelectComponent } from './components/fa-select/fa-select.component';
+import { FaOptionComponent } from './components/fa-select/fa-option/fa-option.component';
+import {CdkConnectedOverlay, CdkOverlayOrigin, OverlayModule} from '@angular/cdk/overlay';
 
 
 @NgModule({
@@ -19,7 +22,9 @@ import {DatePickerComponent} from './components/date-picker/date-picker.componen
     CheckboxComponent,
     RadioComponent,
     RadioGroupComponent,
-    DatePickerComponent
+    DatePickerComponent,
+    FaSelectComponent,
+    FaOptionComponent
   ],
   exports: [
     EllipsisDirective,
@@ -29,9 +34,12 @@ import {DatePickerComponent} from './components/date-picker/date-picker.componen
     BrowserModule,
     BrowserAnimationsModule,
     ScrollingModule,
+    OverlayModule,
     CdkVirtualScrollViewport,
     CdkVirtualForOf,
-    CdkFixedSizeVirtualScroll
+    CdkFixedSizeVirtualScroll,
+    CdkConnectedOverlay,
+    CdkOverlayOrigin
   ],
   bootstrap: [AppComponent]
 })

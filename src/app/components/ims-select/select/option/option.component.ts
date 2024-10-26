@@ -2,7 +2,7 @@ import {Component, Input, TemplateRef, ViewChild} from '@angular/core';
 
 
 @Component({
-  selector: 'fa-option',
+  selector: 'ims-option',
   templateUrl: './option.component.html',
   styleUrls: ['./option.component.scss'],
   standalone: true

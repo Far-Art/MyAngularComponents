@@ -5,7 +5,7 @@ import {ControlValueAccessor} from '@angular/forms';
 
 
 @Component({
-  selector: 'fa-select',
+  selector: 'ims-select',
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss'],
   imports: [
