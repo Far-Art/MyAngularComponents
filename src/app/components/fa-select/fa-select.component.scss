@@ -3,12 +3,17 @@
   width: var(--select-width);
 }
 
-.select-box {
+.select-box-button {
   cursor: pointer;
   width: 100%;
+  border: 1px solid gray;
+  border-radius: 5px;
+  background: none;
+  padding: 0.3em 1em;
 }
 
 .dropdown {
+  width: 100%;
   border: solid 1px #ccc;
   border-radius: 5px;
   background: #fff;

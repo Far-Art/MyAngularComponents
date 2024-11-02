@@ -11,6 +11,8 @@ export class FaOptionComponent<T = any> {
   @Input() value: T | null = null;
   @Output() clicked = new EventEmitter<T | null>();
 
+  @Input('selected') _isSelected = false;
+
   @HostListener('click')
   onClick() {
     this.clicked.emit(this.value);

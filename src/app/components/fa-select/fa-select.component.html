@@ -3,9 +3,10 @@
     role="combobox"
     [attr.aria-expanded]="dropdownOpen"
     aria-haspopup="listbox"
-    class="select-box"
+    class="select-box-button"
     cdkOverlayOrigin
     #trigger="cdkOverlayOrigin"
+    #element
     (click)="onClick()"
     [disabled]="isDisabled">
   {{ selectedValue ?? 'Select value' }}
@@ -13,9 +14,10 @@
 <ng-template
     cdkConnectedOverlay
     [cdkConnectedOverlayOrigin]="trigger"
+    [cdkConnectedOverlayWidth]="element.offsetWidth"
     [cdkConnectedOverlayOpen]="dropdownOpen">
-  <div role="listbox" class="dropdown" cdkTrapFocus>
+  <div [id]="listboxId" @fadeInOut role="listbox" class="dropdown" cdkTrapFocus>
     <ng-content></ng-content>
   </div>
-  <div (click)="closeDropdown()" class="select-backdrop"></div>
+  <div @fadeInOut (click)="closeDropdown()" class="select-backdrop"></div>
 </ng-template>
