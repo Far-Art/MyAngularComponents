@@ -5,13 +5,14 @@ import {CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport, Sc
 import {AppComponent} from './app.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { CheckboxComponent } from './components/checkbox/checkbox.component';
-import { RadioComponent } from './components/radio/radio-button/radio.component';
-import { RadioGroupComponent } from './components/radio/radio-group/radio-group.component';
+import {CheckboxComponent} from './components/checkbox/checkbox.component';
+import {RadioComponent} from './components/radio/radio-button/radio.component';
+import {RadioGroupComponent} from './components/radio/radio-group/radio-group.component';
 import {DatePickerComponent} from './components/date-picker/date-picker.component';
-import { FaSelectComponent } from './components/fa-select/fa-select.component';
-import { FaOptionComponent } from './components/fa-select/fa-option/fa-option.component';
+import {FaSelectComponent} from './components/fa-select/fa-select.component';
+import {FaOptionComponent} from './components/fa-select/fa-option/fa-option.component';
 import {CdkConnectedOverlay, CdkOverlayOrigin, OverlayModule} from '@angular/cdk/overlay';
+import {A11yModule} from '@angular/cdk/a11y';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import {CdkConnectedOverlay, CdkOverlayOrigin, OverlayModule} from '@angular/cdk
     CdkVirtualForOf,
     CdkFixedSizeVirtualScroll,
     CdkConnectedOverlay,
-    CdkOverlayOrigin
+    CdkOverlayOrigin,
+    A11yModule
   ],
   bootstrap: [AppComponent]
 })

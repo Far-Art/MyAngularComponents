@@ -1,4 +1,4 @@
-import {Component, HostBinding} from '@angular/core';
+import {Component, EventEmitter, HostBinding, HostListener, Input, Output} from '@angular/core';
 
 
 @Component({
@@ -6,9 +6,14 @@ import {Component, HostBinding} from '@angular/core';
   templateUrl: './fa-option.component.html',
   styleUrls: ['./fa-option.component.scss']
 })
-export class FaOptionComponent {
+export class FaOptionComponent<T = any> {
 
-  @HostBinding('role') role = 'option';
-  @HostBinding('tabindex') tabIndex = 0;
+  @Input() value: T | null = null;
+  @Output() clicked = new EventEmitter<T | null>();
+
+  @HostListener('click')
+  onClick() {
+    this.clicked.emit(this.value);
+  }
 }
 

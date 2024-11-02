@@ -7,14 +7,15 @@
     cdkOverlayOrigin
     #trigger="cdkOverlayOrigin"
     (click)="onClick()"
->
-  Select
+    [disabled]="isDisabled">
+  {{ selectedValue ?? 'Select value' }}
 </button>
 <ng-template
     cdkConnectedOverlay
     [cdkConnectedOverlayOrigin]="trigger"
     [cdkConnectedOverlayOpen]="dropdownOpen">
-  <div role="listbox" class="dropdown">
+  <div role="listbox" class="dropdown" cdkTrapFocus>
     <ng-content></ng-content>
   </div>
+  <div (click)="closeDropdown()" class="select-backdrop"></div>
 </ng-template>

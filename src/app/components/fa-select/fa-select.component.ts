@@ -1,5 +1,6 @@
-import {Component, ElementRef, Renderer2} from '@angular/core';
-import {Overlay, OverlayRef} from '@angular/cdk/overlay';
+import {AfterContentInit, Component, ContentChildren, EventEmitter, HostListener, Input, OnDestroy, Output, QueryList, Renderer2} from '@angular/core';
+import {FaOptionComponent} from './fa-option/fa-option.component';
+import {Subscription} from 'rxjs';
 
 
 @Component({
@@ -7,67 +8,68 @@ import {Overlay, OverlayRef} from '@angular/cdk/overlay';
   templateUrl: './fa-select.component.html',
   styleUrls: ['./fa-select.component.scss']
 })
-export class FaSelectComponent {
-  options = ['Option 1', 'Option 2', 'Option 3'];
-  selectedOption: string | null = null;
+export class FaSelectComponent<T = any> implements AfterContentInit, OnDestroy {
+
+  @ContentChildren(FaOptionComponent) private options!: QueryList<FaOptionComponent<T>>;
+  private readonly appRoot: HTMLElement = document.getElementById('app-root')!;
+  private subscriptions: Subscription[] = [];
+  private listenFn!: () => void;
+
+  selectedValue: T | null = null;
   dropdownOpen = false;
 
-  private overlayRef!: OverlayRef;
-  private readonly appRoot: HTMLElement = document.getElementById('app-root')!;
+  @Input('disabled') isDisabled = false;
+  @Output('selected') selectedEmitter = new EventEmitter<T | null>();
 
   constructor(
-      private overlay: Overlay,
-      private renderer: Renderer2,
-      private el: ElementRef
+      private renderer: Renderer2
   ) {}
 
   onClick() {
-    this.dropdownOpen = !this.dropdownOpen;
     if (this.dropdownOpen) {
-      this.renderer.setAttribute(this.appRoot, 'inert', '');
+      this.closeDropdown();
     } else {
-      this.renderer.removeAttribute(this.appRoot, 'inert');
+      this.openDropdown();
     }
-
   }
 
-  // toggleDropdown() {
-  //   if (this.dropdownOpen) {
-  //     this.closeDropdown();
-  //   } else {
-  //     this.openDropdown();
-  //   }
-  // }
-  //
-  // openDropdown() {
-  //   this.dropdownOpen = true;
-  //
-  //   // Position strategy to align the dropdown below the select box
-  //   const positionStrategy = this.overlay.position()
-  //                                .flexibleConnectedTo(this.el.nativeElement);
-  //
-  //   this.overlayRef = this.overlay.create({
-  //     hasBackdrop: true,
-  //     backdropClass: 'select-backdrop',
-  //     positionStrategy: positionStrategy,
-  //   });
-  //
-  //   // Attach dropdown component to overlay
-  //   const dropdownPortal = new ComponentPortal(FaOptionComponent);
-  //   const dropdownRef = this.overlayRef.attach(dropdownPortal);
-  //   dropdownRef.instance.options = this.options;
-  //   dropdownRef.instance.selectedOption = this.selectedOption;
-  //
-  //   // Set inert on the body
-  //   this.renderer.setAttribute(this.appRoot, 'inert', '');
-  //
-  //   // Close dropdown on backdrop click
-  //   this.overlayRef.backdropClick().subscribe(() => this.closeDropdown());
-  // }
-  //
-  // closeDropdown() {
-  //   this.dropdownOpen = false;
-  //   this.overlayRef?.detach();
-  //   this.renderer.removeAttribute(this.appRoot, 'inert');
-  // }
+  ngAfterContentInit(): void {
+    this.reSubscribeAll();
+    this.options.changes.subscribe(() => {
+      this.reSubscribeAll();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll();
+    this.listenFn?.();
+  }
+
+  openDropdown() {
+    this.dropdownOpen = true;
+    this.renderer.setAttribute(this.appRoot, 'inert', '');
+    this.listenFn = this.renderer.listen(document.body, 'keydown.Escape', () => this.closeDropdown())
+  }
+
+  closeDropdown() {
+    this.dropdownOpen = false;
+    this.renderer.removeAttribute(this.appRoot, 'inert');
+    this.listenFn?.();
+  }
+
+  private reSubscribeAll() {
+    this.unsubscribeAll();
+    this.options.forEach(opt => {
+      this.subscriptions.push(opt.clicked.subscribe(val => {
+        this.selectedValue = val;
+        this.selectedEmitter.emit(val);
+        this.closeDropdown();
+      }));
+    });
+  }
+
+  private unsubscribeAll() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.length = 0;
+  }
 }
