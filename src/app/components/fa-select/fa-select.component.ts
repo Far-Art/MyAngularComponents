@@ -11,10 +11,10 @@ import {IdGenerator} from '../../utils/IdGenerator';
   styleUrls: ['./fa-select.component.scss'],
   animations: [
     trigger('fadeInOut', [
-        transition(':enter', [
-            style({opacity: 0}),
-            animate('120ms ease-in-out', style({opacity: 1}))
-        ]),
+      transition(':enter', [
+        style({opacity: 0}),
+        animate('120ms ease-in-out', style({opacity: 1}))
+      ]),
       transition(':leave', [
         style({opacity: 1}),
         animate('120ms ease-in-out', style({opacity: 0}))
@@ -27,9 +27,11 @@ export class FaSelectComponent<T = any> implements AfterContentInit, OnDestroy {
   selectedValue: T | null = null;
   dropdownOpen = false;
   listboxId = IdGenerator.generate();
+
   @Input('disabled') isDisabled = false;
   @Output('selected') selectedEmitter = new EventEmitter<T | null>();
   @ContentChildren(FaOptionComponent) private options!: QueryList<FaOptionComponent<T>>;
+
   private readonly appRoot: HTMLElement = document.getElementById('app-root')!;
   private subscriptions: Subscription[] = [];
   private escListenFn!: () => void;
