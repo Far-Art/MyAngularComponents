@@ -9,8 +9,11 @@ button {
   border-radius: 5px;
   transition: background-color 250ms ease-out;
 }
-button:hover {
-  background-color: #e0e0e0;
+button.selected {
+  background: #d1cbe3;
+}
+button.highlighted {
+  background: #bea9fd;
 }
 
 /*# sourceMappingURL=fa-option.component.css.map */

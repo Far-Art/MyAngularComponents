@@ -7,9 +7,9 @@
     cdkOverlayOrigin
     #trigger="cdkOverlayOrigin"
     #element
-    (click)="onClick()"
+    (click)="toggleDropdown()"
     [disabled]="isDisabled">
-  {{ selectedValue ?? 'Select value' }}
+  {{ displayedContent ?? 'Select value' }}
 </button>
 <ng-template
     cdkConnectedOverlay

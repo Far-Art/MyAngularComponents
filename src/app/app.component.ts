@@ -1,5 +1,6 @@
 import {AfterViewInit, Component} from '@angular/core';
 import {ElementCaptureService} from './services/element-capture.service';
+import {FormControl, FormGroup} from '@angular/forms';
 
 
 @Component({
@@ -9,6 +10,10 @@ import {ElementCaptureService} from './services/element-capture.service';
 })
 export class AppComponent implements AfterViewInit {
   title = 'My-Angular-Components';
+
+  form = new FormGroup({
+    select: new FormControl('3')
+  });
 
   constructor(private elementCapture: ElementCaptureService) { }
 

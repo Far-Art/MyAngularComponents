@@ -13,6 +13,9 @@ import {FaSelectComponent} from './components/fa-select/fa-select.component';
 import {FaOptionComponent} from './components/fa-select/fa-option/fa-option.component';
 import {CdkConnectedOverlay, CdkOverlayOrigin, OverlayModule} from '@angular/cdk/overlay';
 import {A11yModule} from '@angular/cdk/a11y';
+import {ReactiveFormsModule} from '@angular/forms';
+import { CollapsibleTableComponent } from './components/collapsible-table/collapsible-table.component';
+import { CollapsibleTableRowComponent } from './components/collapsible-table/collapsible-table-row/collapsible-table-row.component';
 
 
 @NgModule({
@@ -25,7 +28,9 @@ import {A11yModule} from '@angular/cdk/a11y';
     RadioGroupComponent,
     DatePickerComponent,
     FaSelectComponent,
-    FaOptionComponent
+    FaOptionComponent,
+    CollapsibleTableComponent,
+    CollapsibleTableRowComponent
   ],
   exports: [
     EllipsisDirective,
@@ -41,7 +46,8 @@ import {A11yModule} from '@angular/cdk/a11y';
     CdkFixedSizeVirtualScroll,
     CdkConnectedOverlay,
     CdkOverlayOrigin,
-    A11yModule
+    A11yModule,
+    ReactiveFormsModule
   ],
   bootstrap: [AppComponent]
 })

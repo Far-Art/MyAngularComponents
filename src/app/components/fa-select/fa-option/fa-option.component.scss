@@ -9,7 +9,11 @@ button {
   border-radius: 5px;
   transition: background-color 250ms ease-out;
 
-  &:hover {
-    background-color: #e0e0e0;
+  &.selected {
+    background: #d1cbe3;
+  }
+
+  &.highlighted {
+    background: #bea9fd;
   }
 }
