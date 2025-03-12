@@ -19,7 +19,7 @@ export class ImsInputComponent implements ControlValueAccessor {
   @ViewChild('inputEl', {static: true}) inputEl!: ElementRef<HTMLInputElement>;
   _formattedValue: string = '';
   errorMessage: string | null = null;
-  currencySymbol: string = '';
+
   @Input() min: number | null = null;
   @Input() max: number | null = null;
   private _value: string = '';
@@ -92,7 +92,7 @@ export class ImsInputComponent implements ControlValueAccessor {
             "preserve"
         );
       }
-      // Calculate new caret: shift by the difference in total length.
+      // Calculate comma shift.
       let commaShift = newFormatted.length - oldFormatted.length;
       if (commaShift > 1) {
         commaShift = 1;
@@ -106,7 +106,7 @@ export class ImsInputComponent implements ControlValueAccessor {
       newCaret = Math.max(0, Math.min(newCaret, newFormatted.length));
       target.setSelectionRange(newCaret, newCaret);
     } else {
-      // If the raw value doesn't match our allowed pattern, revert.
+      // If the raw value doesn't match allowed pattern, revert.
       target.value = oldFormatted;
       target.setSelectionRange(oldCaret, oldCaret);
     }
@@ -170,11 +170,6 @@ export class ImsInputComponent implements ControlValueAccessor {
       return result + '.' + (fractionalPart !== null ? fractionalPart : '');
     }
     return result;
-  }
-
-  // Calculate the new caret position
-  private calculateNewCaret(oldCaret: number, oldFormatted: string, newFormatted: string) {
-
   }
 
   private validateValue(): void {
