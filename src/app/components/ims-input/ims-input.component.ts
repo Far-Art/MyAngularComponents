@@ -51,6 +51,15 @@ export class ImsInputComponent implements ControlValueAccessor {
 
     // Remove commas so we can work with the raw value.
     let rawValue = target.value.replace(/,/g, '');
+
+    // Auto-prepend zero if the value starts with a dot,
+    // or if it starts with '-.' then prepend zero after the minus.
+    if (rawValue.startsWith('.')) {
+      rawValue = '0' + rawValue;
+    } else if (rawValue.startsWith('-.')) {
+      rawValue = '-0.' + rawValue.slice(2);
+    }
+
     // Allow incomplete but potentially valid inputs like '-', '123.' etc.
     if (/^-?\d*\.?\d*$/.test(rawValue)) {
       this._value = rawValue;
@@ -62,7 +71,6 @@ export class ImsInputComponent implements ControlValueAccessor {
       // Store new formatted value.
       this._formattedValue = newFormatted;
 
-      // const nativeInput = this.inputEl.nativeElement;
       const currentVal = target.value;
 
       // Only update if something has changed.
