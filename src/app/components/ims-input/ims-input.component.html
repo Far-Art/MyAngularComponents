@@ -1,8 +1,7 @@
 <input #inputEl
        [value]="_formattedValue"
-       (input)="onInput()"
+       (input)="onInput($any($event))"
        (keydown)="onKeyDown($event)"
-       (paste)="onPaste($event)"
        (copy)="onCopy($event)"
        (blur)="onTouched()"
        type="text">
