@@ -92,7 +92,6 @@ export class ImsInputComponent implements ControlValueAccessor {
             ) {
           suffixLength++;
         }
-        // Replace only the changed portion.
         target.setRangeText(
             newFormatted.substring(prefixLength, newFormatted.length - suffixLength),
             prefixLength,
@@ -100,19 +99,9 @@ export class ImsInputComponent implements ControlValueAccessor {
             "preserve"
         );
       }
-      // Calculate comma shift.
-      let commaShift = newFormatted.length - oldFormatted.length;
-      if (commaShift > 1) {
-        commaShift = 1;
-      } else if (commaShift < -1) {
-        commaShift = -1;
-      } else {
-        commaShift = 0;
-      }
 
-      let newCaret = oldCaret + commaShift;
-      newCaret = Math.max(0, Math.min(newCaret, newFormatted.length));
-      target.setSelectionRange(newCaret, newCaret);
+      // Update caret position using the extracted method.
+      this.updateCaretPosition(oldFormatted, newFormatted, oldCaret);
     } else {
       // If the raw value doesn't match allowed pattern, revert.
       target.value = oldFormatted;
@@ -147,6 +136,77 @@ export class ImsInputComponent implements ControlValueAccessor {
     }
     // Otherwise, prevent the key.
     event.preventDefault();
+  }
+
+  onPaste(event: ClipboardEvent): void {
+    event.preventDefault();
+    const clipboardData = event.clipboardData;
+    if (!clipboardData) {
+      return;
+    }
+    let pastedText = clipboardData.getData('text').trim();
+    // Remove commas from the pasted text.
+    pastedText = pastedText.replace(/,/g, '');
+    // Validate the pasted text.
+    if (!/^-?\d*\.?\d*$/.test(pastedText)) {
+      // If not valid, do not paste.
+      return;
+    }
+
+    const target = this.inputEl.nativeElement;
+    const start = target.selectionStart || 0;
+    const end = target.selectionEnd || 0;
+
+    // Get the raw current value (without commas).
+    const currentRawValue = target.value.replace(/,/g, '');
+    // Insert the sanitized pasted text at the selection.
+    const newRawValue = currentRawValue.slice(0, start) + pastedText + currentRawValue.slice(end);
+
+    // Update internal value and notify.
+    this._value = newRawValue;
+    this.validateValue();
+    this.onChange(this._value);
+    const newFormatted = this.formatNumber(this._value);
+    this._formattedValue = newFormatted;
+    target.value = newFormatted;
+
+    // Calculate new caret position based on the raw caret index.
+    const rawCaretIndex = start + pastedText.length;
+    let newCaret = 0;
+    let count = 0;
+    for (let i = 0; i < newFormatted.length; i++) {
+      if (newFormatted[i] !== ',') {
+        count++;
+      }
+      if (count >= rawCaretIndex) {
+        newCaret = i + 1;
+        break;
+      }
+    }
+    target.setSelectionRange(newCaret, newCaret);
+  }
+
+  onCopy(event: ClipboardEvent): void {
+    event.preventDefault();
+    if (event.clipboardData) {
+      // Set raw value (without commas) in clipboard.
+      event.clipboardData.setData('text/plain', this._value);
+    }
+  }
+
+  private updateCaretPosition(oldFormatted: string, newFormatted: string, oldCaret: number): void {
+    // Calculate comma shift.
+    let commaShift = newFormatted.length - oldFormatted.length;
+    if (commaShift > 1) {
+      commaShift = 1;
+    } else if (commaShift < -1) {
+      commaShift = -1;
+    } else {
+      commaShift = 0;
+    }
+    let newCaret = oldCaret + commaShift;
+    newCaret = Math.max(0, Math.min(newCaret, newFormatted.length));
+    this.inputEl.nativeElement.setSelectionRange(newCaret, newCaret);
   }
 
   // Formats the raw number by inserting commas into the integer part.

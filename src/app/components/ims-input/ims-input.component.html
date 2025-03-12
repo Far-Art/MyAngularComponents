@@ -2,5 +2,7 @@
        [value]="_formattedValue"
        (input)="onInput()"
        (keydown)="onKeyDown($event)"
+       (paste)="onPaste($event)"
+       (copy)="onCopy($event)"
        (blur)="onTouched()"
        type="text">
