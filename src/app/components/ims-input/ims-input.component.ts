@@ -42,10 +42,9 @@ export class ImsInputComponent implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  onInput(event: InputEvent): void {
-    const target = event.target as HTMLInputElement;
-    console.log('selectionStart:', target.selectionStart);
-    console.log('selectionEnd:', target.selectionEnd);
+  onInput(): void {
+    const target = this.inputEl.nativeElement;
+
     // Save the current (formatted) value and caret position.
     const oldFormatted = this._formattedValue;
     const oldCaret = target.selectionStart || 0;
@@ -63,8 +62,8 @@ export class ImsInputComponent implements ControlValueAccessor {
       // Store new formatted value.
       this._formattedValue = newFormatted;
 
-      const nativeInput = this.inputEl.nativeElement;
-      const currentVal = nativeInput.value;
+      // const nativeInput = this.inputEl.nativeElement;
+      const currentVal = target.value;
 
       // Only update if something has changed.
       if (currentVal !== newFormatted) {
@@ -86,7 +85,7 @@ export class ImsInputComponent implements ControlValueAccessor {
           suffixLength++;
         }
         // Replace only the changed portion.
-        nativeInput.setRangeText(
+        target.setRangeText(
             newFormatted.substring(prefixLength, newFormatted.length - suffixLength),
             prefixLength,
             currentVal.length - suffixLength,
@@ -94,9 +93,18 @@ export class ImsInputComponent implements ControlValueAccessor {
         );
       }
       // Calculate new caret: shift by the difference in total length.
-      let newCaret = oldCaret + (newFormatted.length - oldFormatted.length);
+      let commaShift = newFormatted.length - oldFormatted.length;
+      if (commaShift > 1) {
+        commaShift = 1;
+      } else if (commaShift < -1) {
+        commaShift = -1;
+      } else {
+        commaShift = 0;
+      }
+
+      let newCaret = oldCaret + commaShift;
       newCaret = Math.max(0, Math.min(newCaret, newFormatted.length));
-      nativeInput.setSelectionRange(newCaret, newCaret);
+      target.setSelectionRange(newCaret, newCaret);
     } else {
       // If the raw value doesn't match our allowed pattern, revert.
       target.value = oldFormatted;
@@ -164,23 +172,9 @@ export class ImsInputComponent implements ControlValueAccessor {
     return result;
   }
 
-  // Calculate the new caret position by counting non-comma characters.
-  private calculateNewCaret(oldCaret: number, oldFormatted: string, newFormatted: string): number {
-    // Count non-comma characters in the old formatted value up to the old caret position.
-    const nonCommaCountBeforeCaret = oldFormatted.slice(0, oldCaret).length;
-    // In the new formatted value, find the position where this count is reached.
-    let count = 0;
-    let newCaret = 0;
-    for (let i = 0; i < newFormatted.length; i++) {
-      // if (newFormatted[i] !== ',') {
-        count++;
-      // }
-      if (count >= nonCommaCountBeforeCaret) {
-        newCaret = count + 1;
-        break;
-      }
-    }
-    return newCaret;
+  // Calculate the new caret position
+  private calculateNewCaret(oldCaret: number, oldFormatted: string, newFormatted: string) {
+
   }
 
   private validateValue(): void {
