@@ -12,13 +12,15 @@ export class AppComponent implements AfterViewInit {
   title = 'My-Angular-Components';
 
   form = new FormGroup({
-    select: new FormControl('3')
+    input: new FormControl('')
   });
 
   constructor(private elementCapture: ElementCaptureService) { }
 
   ngAfterViewInit(): void {
-
+    this.form.valueChanges.subscribe(change => {
+      console.log(change)
+    });
   }
 
   onValueChange(event: string | null) {

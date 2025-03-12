@@ -16,6 +16,10 @@ import {A11yModule} from '@angular/cdk/a11y';
 import {ReactiveFormsModule} from '@angular/forms';
 import { CollapsibleTableComponent } from './components/collapsible-table/collapsible-table.component';
 import { CollapsibleTableRowComponent } from './components/collapsible-table/collapsible-table-row/collapsible-table-row.component';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import { ImsInputComponent } from './components/ims-input/ims-input.component';
+import { NumberFormatterDirective } from './directives/number-formatter.directive';
 
 
 @NgModule({
@@ -30,7 +34,9 @@ import { CollapsibleTableRowComponent } from './components/collapsible-table/col
     FaSelectComponent,
     FaOptionComponent,
     CollapsibleTableComponent,
-    CollapsibleTableRowComponent
+    CollapsibleTableRowComponent,
+    ImsInputComponent,
+    NumberFormatterDirective
   ],
   exports: [
     EllipsisDirective,
@@ -47,7 +53,9 @@ import { CollapsibleTableRowComponent } from './components/collapsible-table/col
     CdkConnectedOverlay,
     CdkOverlayOrigin,
     A11yModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatIconModule
   ],
   bootstrap: [AppComponent]
 })

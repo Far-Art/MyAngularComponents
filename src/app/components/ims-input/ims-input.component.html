@@ -1,0 +1,6 @@
+<input #inputEl
+       [value]="_formattedValue"
+       (input)="onInput($any($event).target)"
+       (keydown)="onKeyDown($event)"
+       (blur)="onTouched()"
+       type="text">
