@@ -155,9 +155,12 @@ export class ImsInputComponent implements ControlValueAccessor {
     const oldFormatted = this._formattedValue;
     const start = target.selectionStart || 0;
     const end = target.selectionEnd || 0;
+
+    const formattedSlice = target.value.slice(start, end);
+    const commasInSlice = formattedSlice.length - formattedSlice.replace(/,/g, '').length;
     // Get the raw current value (without commas) and insert the pasted text.
     const currentRawValue = target.value.replace(/,/g, '');
-    const newRawValue = currentRawValue.slice(0, start - 1) + pastedText + currentRawValue.slice(end - 1);
+    const newRawValue = currentRawValue.slice(0, start) + pastedText + currentRawValue.slice(end - commasInSlice);
 
     this._value = newRawValue;
     this.validateValue();
@@ -223,7 +226,7 @@ export class ImsInputComponent implements ControlValueAccessor {
       integerPart = integerPart.substring(1);
     }
     // Format the integer part (if any) using locale formatting.
-    const formattedInteger = integerPart ? Number(integerPart).toLocaleString('en-US') : '';
+    const formattedInteger = integerPart ? BigInt(integerPart).toLocaleString('en-US') : '';
     const result = sign + formattedInteger;
     // If the user has typed a dot, append it along with any fractional part.
     if (value.indexOf('.') !== -1) {
@@ -234,6 +237,7 @@ export class ImsInputComponent implements ControlValueAccessor {
 
   private validateValue(): void {
     const num = Number(this._value);
+
     // Only validate if the value is nonempty and a valid number
     if (this._value !== '' && !isNaN(num)) {
       if (this.min !== null && num < this.min) {
