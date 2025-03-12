@@ -19,7 +19,7 @@ export class AppComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.form.valueChanges.subscribe(change => {
-      console.log(change)
+      // console.log(change)
     });
   }
 

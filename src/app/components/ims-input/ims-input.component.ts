@@ -42,7 +42,10 @@ export class ImsInputComponent implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  onInput(target: HTMLInputElement): void {
+  onInput(event: InputEvent): void {
+    const target = event.target as HTMLInputElement;
+    console.log('selectionStart:', target.selectionStart);
+    console.log('selectionEnd:', target.selectionEnd);
     // Save the current (formatted) value and caret position.
     const oldFormatted = this._formattedValue;
     const oldCaret = target.selectionStart || 0;
