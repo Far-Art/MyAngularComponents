@@ -11,17 +11,14 @@
     </div>
   </div>
 
-  <!-- Hidden under the hood: we capture the body content as a template -->
-  <ng-template #bodyTemplate>
-    <ng-content select="fa-collapsible-container-body"></ng-content>
-  </ng-template>
-
   <!-- This container is where the body view will be inserted -->
-  <ng-container #bodyContainer></ng-container>
+  <ng-container *ngIf="!isCollapsed">
+    <ng-container *ngTemplateOutlet="bodyContent.template"></ng-container>
+  </ng-container>
 </div>
 
 <ng-template #headerTitle>
-  <fa-collapsible-container-header>{{title}}</fa-collapsible-container-header>
+  <fa-collapsible-container-header>{{ title }}</fa-collapsible-container-header>
 </ng-template>
 
 <ng-template #headerContent>

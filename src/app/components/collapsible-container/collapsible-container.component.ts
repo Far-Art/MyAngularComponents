@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ContentChild, EventEmitter, Input, OnInit, Optional, Output, SkipSelf, TemplateRef, ViewChild, ViewContainerRef} from '@angular/core';
+import {AfterViewInit, Component, ContentChild, ContentChildren, EventEmitter, Input, OnInit, Optional, Output, SkipSelf, TemplateRef, ViewChild, ViewContainerRef} from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {CollapsibleContainerBodyComponent} from './collapsible-container-body/collapsible-container-body.component';
 
@@ -74,11 +74,8 @@ import {CollapsibleContainerBodyComponent} from './collapsible-container-body/co
   ]
 })
 export class CollapsibleContainerComponent implements AfterViewInit {
+  @ContentChild(CollapsibleContainerBodyComponent) bodyContent!: CollapsibleContainerBodyComponent;
 
-  @ViewChild('bodyTemplate', {static: true}) bodyTemplate!: TemplateRef<any>;
-  @ViewChild('bodyContainer', {read: ViewContainerRef, static: true}) bodyContainer!: ViewContainerRef;
-
-  @ContentChild(CollapsibleContainerBodyComponent) body!: CollapsibleContainerBodyComponent;
   @Input() invalid: boolean = false;
   @Input() disabled: boolean = false;
   public readonly isNested: boolean;
@@ -118,7 +115,6 @@ export class CollapsibleContainerComponent implements AfterViewInit {
 
   private expand() {
     this.isCollapsed = false;
-    this.updateBodyView();
     if (this.propagateState) {
       this.childList.forEach(child => child.expand());
     }
@@ -127,24 +123,11 @@ export class CollapsibleContainerComponent implements AfterViewInit {
 
   private collapse() {
     this.isCollapsed = true;
-    this.updateBodyView();
     if (this.propagateState) {
       this.childList.forEach(child => child.collapse());
     }
     this.collapsedChange.emit(this.isCollapsed);
   }
 
-  private updateBodyView() {
-    if (this.isCollapsed) {
-      // Destroy the content view. This will trigger ngOnDestroy in any components inside.
-      this.bodyContainer.clear();
-    } else {
-      // Re-create the content view, triggering ngOnInit in the projected components.
-      if (!this.bodyContainer.length) {
-        this.bodyContainer.createEmbeddedView(this.bodyTemplate);
-      }
-    }
-    this.body.updateBodyView(this.isCollapsed);
-  }
 
 }
