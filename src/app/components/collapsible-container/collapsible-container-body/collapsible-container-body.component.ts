@@ -1,4 +1,4 @@
-import {Component, OnDestroy, TemplateRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, Self} from '@angular/core';
 
 
 @Component({
@@ -6,12 +6,12 @@ import {Component, OnDestroy, TemplateRef, ViewChild} from '@angular/core';
   templateUrl: './collapsible-container-body.component.html',
   styleUrls: ['./collapsible-container-body.component.scss']
 })
-export class CollapsibleContainerBodyComponent implements OnDestroy {
+export class CollapsibleContainerBodyComponent {
 
-  @ViewChild(TemplateRef) template!: TemplateRef<any>;
+  constructor(@Self() private _elRef: ElementRef<HTMLElement>) {}
 
-  ngOnDestroy(): void {
-    console.log('body destroy')
+  get elRef(): ElementRef<HTMLElement> {
+    return this._elRef;
   }
 
 }

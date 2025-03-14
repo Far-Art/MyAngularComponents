@@ -14,15 +14,16 @@ import {FaOptionComponent} from './components/fa-select/fa-option/fa-option.comp
 import {CdkConnectedOverlay, CdkOverlayOrigin, OverlayModule} from '@angular/cdk/overlay';
 import {A11yModule} from '@angular/cdk/a11y';
 import {ReactiveFormsModule} from '@angular/forms';
-import { CollapsibleTableComponent } from './components/collapsible-table/collapsible-table.component';
-import { CollapsibleTableRowComponent } from './components/collapsible-table/collapsible-table-row/collapsible-table-row.component';
+import {CollapsibleTableComponent} from './components/collapsible-table/collapsible-table.component';
+import {CollapsibleTableRowComponent} from './components/collapsible-table/collapsible-table-row/collapsible-table-row.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-import { ImsInputComponent } from './components/ims-input/ims-input.component';
-import { NumberFormatterDirective } from './directives/number-formatter.directive';
-import { CollapsibleContainerHeaderComponent } from './components/collapsible-container/collapsible-container-header/collapsible-container-header.component';
-import { CollapsibleContainerBodyComponent } from './components/collapsible-container/collapsible-container-body/collapsible-container-body.component';
+import {ImsInputComponent} from './components/ims-input/ims-input.component';
+import {NumberFormatterDirective} from './directives/number-formatter.directive';
+import {CollapsibleContainerHeaderComponent} from './components/collapsible-container/collapsible-container-header/collapsible-container-header.component';
+import {CollapsibleContainerBodyComponent} from './components/collapsible-container/collapsible-container-body/collapsible-container-body.component';
 import {CollapsibleContainerComponent} from './components/collapsible-container/collapsible-container.component';
+import {PortalModule} from '@angular/cdk/portal';
 
 
 @NgModule({
@@ -61,7 +62,8 @@ import {CollapsibleContainerComponent} from './components/collapsible-container/
     A11yModule,
     ReactiveFormsModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    PortalModule
   ],
   bootstrap: [AppComponent]
 })

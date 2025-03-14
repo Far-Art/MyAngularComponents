@@ -1,6 +1,7 @@
-import {AfterViewInit, Component, ContentChild, ContentChildren, EventEmitter, Input, OnInit, Optional, Output, SkipSelf, TemplateRef, ViewChild, ViewContainerRef} from '@angular/core';
+import {AfterViewInit, Component, ContentChild, EventEmitter, Input, Optional, Output, SkipSelf, ViewChild} from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {CollapsibleContainerBodyComponent} from './collapsible-container-body/collapsible-container-body.component';
+import {CdkPortalOutlet} from '@angular/cdk/portal';
 
 
 @Component({
@@ -74,7 +75,8 @@ import {CollapsibleContainerBodyComponent} from './collapsible-container-body/co
   ]
 })
 export class CollapsibleContainerComponent implements AfterViewInit {
-  @ContentChild(CollapsibleContainerBodyComponent) bodyContent!: CollapsibleContainerBodyComponent;
+
+  @ContentChild(CollapsibleContainerBodyComponent) bodyComponent!: CollapsibleContainerBodyComponent;
 
   @Input() invalid: boolean = false;
   @Input() disabled: boolean = false;
@@ -105,6 +107,7 @@ export class CollapsibleContainerComponent implements AfterViewInit {
     } else {
       this.collapse();
     }
+    console.log(this.bodyComponent.elRef.nativeElement)
   }
 
   private setState(isCollapsed: boolean) {
@@ -128,6 +131,5 @@ export class CollapsibleContainerComponent implements AfterViewInit {
     }
     this.collapsedChange.emit(this.isCollapsed);
   }
-
 
 }
