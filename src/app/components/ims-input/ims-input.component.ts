@@ -1,4 +1,4 @@
-import {Component, ElementRef, forwardRef, Input, ViewChild} from '@angular/core';
+import {Component, ElementRef, forwardRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 
@@ -14,7 +14,7 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
     }
   ]
 })
-export class ImsInputComponent implements ControlValueAccessor {
+export class ImsInputComponent implements ControlValueAccessor, OnInit, OnDestroy {
 
   @ViewChild('inputEl', {static: true}) inputEl!: ElementRef<HTMLInputElement>;
   _formattedValue: string = '';
@@ -187,6 +187,14 @@ export class ImsInputComponent implements ControlValueAccessor {
     } else {
       this.errorMessage = null;
     }
+  }
+
+  ngOnDestroy(): void {
+    console.log('destroyed')
+  }
+
+  ngOnInit(): void {
+    console.log('created')
   }
 
 }

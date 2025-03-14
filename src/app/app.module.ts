@@ -20,6 +20,9 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import { ImsInputComponent } from './components/ims-input/ims-input.component';
 import { NumberFormatterDirective } from './directives/number-formatter.directive';
+import { CollapsibleContainerHeaderComponent } from './components/collapsible-container/collapsible-container-header/collapsible-container-header.component';
+import { CollapsibleContainerBodyComponent } from './components/collapsible-container/collapsible-container-body/collapsible-container-body.component';
+import {CollapsibleContainerComponent} from './components/collapsible-container/collapsible-container.component';
 
 
 @NgModule({
@@ -36,7 +39,10 @@ import { NumberFormatterDirective } from './directives/number-formatter.directiv
     CollapsibleTableComponent,
     CollapsibleTableRowComponent,
     ImsInputComponent,
-    NumberFormatterDirective
+    NumberFormatterDirective,
+    CollapsibleContainerComponent,
+    CollapsibleContainerHeaderComponent,
+    CollapsibleContainerBodyComponent
   ],
   exports: [
     EllipsisDirective,

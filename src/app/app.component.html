@@ -1,63 +1,9 @@
 <div class="main-page-container">
   <div>
-    <form [formGroup]="form">
-      <ims-input formControlName="input"></ims-input>
-    </form>
-    <!--    <app-date-picker></app-date-picker>-->
-    <!--    <button mat-icon-button>-->
-    <!--      <mat-icon>zoom_in</mat-icon>-->
-    <!--    </button>-->
-  </div>
-  <div>
-    <!--    <table>-->
-    <!--      <thead>-->
-    <!--      <tr>-->
-    <!--        <th>col 1</th>-->
-    <!--        <th>col 2</th>-->
-    <!--        <th>col 3</th>-->
-    <!--      </tr>-->
-    <!--      </thead>-->
-    <!--      <tbody>-->
-    <!--      <fa-collapsible-table-row>-->
-    <!--        <td>data 1</td>-->
-    <!--        <td>data 2</td>-->
-    <!--        <td>data 3</td>-->
-    <!--        <fa-collapsible-table-row>-->
-    <!--          <td>nested 1</td>-->
-    <!--          <td>nested 1</td>-->
-    <!--          <td>nested 1</td>-->
-    <!--        </fa-collapsible-table-row>-->
-    <!--        <fa-collapsible-table-row>-->
-    <!--          <td>nested 2</td>-->
-    <!--          <td>nested 2</td>-->
-    <!--          <td>nested 2</td>-->
-    <!--          <fa-collapsible-table-row>-->
-    <!--            <td>nested nested 3</td>-->
-    <!--            <td>nested nested 3</td>-->
-    <!--            <td>nested nested 3</td>-->
-    <!--          </fa-collapsible-table-row>-->
-    <!--        </fa-collapsible-table-row>-->
-    <!--      </fa-collapsible-table-row>-->
-    <!--      </tbody>-->
-    <!--    </table>-->
-  </div>
-
-  <!--  <form [formGroup]="form">-->
-  <!--  <fa-select formControlName="select" style="width: 150px">-->
-  <!--    <fa-option value="1">option 1</fa-option>-->
-  <!--    <fa-option value="2">option 2</fa-option>-->
-  <!--    <fa-option value="3">option 3</fa-option>-->
-  <!--  </fa-select>-->
-  <!--  </form>-->
-  <div>
-    <!--    <fa-autocomplete id="auto1" placeholder="autocomplete">label</fa-autocomplete>-->
-    <!--    <fa-checkbox>this is <b>important</b> checkbox 1</fa-checkbox>-->
-    <!--    <fa-checkbox>this is <b>important</b> checkbox 2</fa-checkbox>-->
-    <!--    <fa-checkbox>this is <b>important</b> checkbox 3</fa-checkbox>-->
-    <!--    <fa-checkbox>this is <b>important</b> checkbox 4</fa-checkbox>-->
-    <!--    <fa-radio-group (selectedValue)="onValueChange($event)">-->
-    <!--      <fa-radio value="some value 1">this is <b style="user-select: text">important</b> radio</fa-radio>-->
-    <!--      <fa-radio value="some value 2">this is <b style="user-select: text">important</b> radio</fa-radio>-->
-    <!--    </fa-radio-group>-->
+    <fa-collapsible-container style="width: 400px" title="title">
+      <fa-collapsible-container-body>
+        <ims-input></ims-input>
+      </fa-collapsible-container-body>
+    </fa-collapsible-container>
   </div>
 </div>

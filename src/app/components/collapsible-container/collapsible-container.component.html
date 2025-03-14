@@ -4,34 +4,33 @@
   <div class="collapsible-container-header"
        [ngClass]="{'nested': isNested, 'invalid': invalid, 'disabled': disabled}">
     <div (click)="switchState()" [ngClass]="{'invalid': invalid, 'disabled': disabled}">
-      <ng-container [ngTemplateOutlet]="defaultToggleIcon"></ng-container>
+      <ng-container [ngTemplateOutlet]="toggleIcon"></ng-container>
     </div>
     <div class="collapsible-container-header-container">
       <ng-container [ngTemplateOutlet]=" title ? headerTitle : headerContent"></ng-container>
     </div>
   </div>
 
-  <div *ngIf="!isCollapsedState"
-       @expandCollapse [@.disabled]="disabled"
-       class="collapsible-container-content"
-       [ngClass]="{'disabled': disabled, 'nested': isNested}">
-    <ng-content></ng-content>
-  </div>
+  <!-- Hidden under the hood: we capture the body content as a template -->
+  <ng-template #bodyTemplate>
+    <ng-content select="fa-collapsible-container-body"></ng-content>
+  </ng-template>
+
+  <!-- This container is where the body view will be inserted -->
+  <ng-container #bodyContainer></ng-container>
 </div>
 
 <ng-template #headerTitle>
-  <span class="header-title">
-    {{title}}
-  </span>
+  <fa-collapsible-container-header>{{title}}</fa-collapsible-container-header>
 </ng-template>
 
 <ng-template #headerContent>
-  <ng-content select="[header]"></ng-content>
+  <ng-content select="fa-collapsible-container-header"></ng-content>
 </ng-template>
 
-<ng-template #defaultToggleIcon>
+<ng-template #toggleIcon>
   <div class="plus-button">
-    <div class="horizontal-line" [@horizontalLineRotate]="isCollapsedState"></div>
-    <div class="vertical-line" [@verticalLineRotate]="isCollapsedState"></div>
+    <div class="horizontal-line" [@horizontalLineRotate]="isCollapsed"></div>
+    <div class="vertical-line" [@verticalLineRotate]="isCollapsed"></div>
   </div>
 </ng-template>
