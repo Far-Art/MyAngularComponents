@@ -43,7 +43,7 @@ import {PortalModule} from '@angular/cdk/portal';
     NumberFormatterDirective,
     CollapsibleContainerComponent,
     CollapsibleContainerHeaderComponent,
-    CollapsibleContainerBodyComponent
+    CollapsibleContainerBodyComponent,
   ],
   exports: [
     EllipsisDirective,

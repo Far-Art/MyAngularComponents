@@ -1,4 +1,4 @@
-import {Component, ElementRef, Self} from '@angular/core';
+import {Component, TemplateRef, ViewChild} from '@angular/core';
 
 
 @Component({
@@ -8,10 +8,6 @@ import {Component, ElementRef, Self} from '@angular/core';
 })
 export class CollapsibleContainerBodyComponent {
 
-  constructor(@Self() private _elRef: ElementRef<HTMLElement>) {}
-
-  get elRef(): ElementRef<HTMLElement> {
-    return this._elRef;
-  }
+  @ViewChild('bodyTemplate', { static: true }) template!: TemplateRef<unknown>;
 
 }

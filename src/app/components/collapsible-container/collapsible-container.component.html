@@ -11,13 +11,9 @@
     </div>
   </div>
 
-  <!-- This container is where the body view will be inserted -->
-<!--  <ng-container *ngIf="!isCollapsed">-->
-<!--    <ng-container *ngTemplateOutlet="bodyContent.template"></ng-container>-->
-<!--  </ng-container>-->
   <div class="collapsible-container-content"
-       [ngClass]="{'disabled': disabled, 'nested': isNested}">
-    <ng-content select="fa-collapsible-container-body"></ng-content>
+       [ngClass]="{'disabled': disabled, 'nested': isNested}" *ngIf="templateRef && !isCollapsed">
+    <ng-container [ngTemplateOutlet]="templateRef"></ng-container>
   </div>
 </div>
 
