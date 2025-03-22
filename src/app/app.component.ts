@@ -1,7 +1,13 @@
 import {AfterViewInit, Component} from '@angular/core';
-import {ElementCaptureService} from './services/element-capture.service';
 import {FormControl, FormGroup} from '@angular/forms';
 
+
+export interface PeriodicElement {
+  name: string;
+  position: number;
+  weight: number;
+  symbol: string;
+}
 
 @Component({
   selector: 'app-root',
@@ -15,16 +21,37 @@ export class AppComponent implements AfterViewInit {
     input: new FormControl('')
   });
 
-  constructor(private elementCapture: ElementCaptureService) { }
+  ELEMENT_DATA: PeriodicElement[] = [];
+
+  constructor() { }
 
   ngAfterViewInit(): void {
-    this.form.valueChanges.subscribe(change => {
-      // console.log(change)
-    });
+    setTimeout(() => {
+      this.ELEMENT_DATA = [
+        {
+          position: 1,
+          name: 'Hydrogen',
+          weight: 1.0079,
+          symbol: 'H'
+        },
+        {
+          position: 2,
+          name: 'Helium',
+          weight: 5.0026,
+          symbol: 'He'
+        },
+        {
+          position: 3,
+          name: 'Helium',
+          weight: 4.0026,
+          symbol: 'Hee'
+        }
+      ]
+    }, 1000)
   }
 
-  onValueChange(event: string | null) {
-    console.log(event);
+  onTableActivate = (value: PeriodicElement) => {
+    console.log(value);
   }
 
 }

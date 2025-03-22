@@ -21,9 +21,12 @@ import {MatIconModule} from '@angular/material/icon';
 import {ImsInputComponent} from './components/ims-input/ims-input.component';
 import {NumberFormatterDirective} from './directives/number-formatter.directive';
 import {CollapsibleContainerHeaderComponent} from './components/collapsible-container/collapsible-container-header/collapsible-container-header.component';
-import {CollapsibleContainerBodyComponent} from './components/collapsible-container/collapsible-container-body/collapsible-container-body.component';
 import {CollapsibleContainerComponent} from './components/collapsible-container/collapsible-container.component';
 import {PortalModule} from '@angular/cdk/portal';
+import { TableComponent } from './components/table/table.component';
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatSortModule} from '@angular/material/sort';
 
 
 @NgModule({
@@ -42,8 +45,7 @@ import {PortalModule} from '@angular/cdk/portal';
     ImsInputComponent,
     NumberFormatterDirective,
     CollapsibleContainerComponent,
-    CollapsibleContainerHeaderComponent,
-    CollapsibleContainerBodyComponent,
+    CollapsibleContainerHeaderComponent
   ],
   exports: [
     EllipsisDirective,
@@ -63,7 +65,11 @@ import {PortalModule} from '@angular/cdk/portal';
     ReactiveFormsModule,
     MatButtonModule,
     MatIconModule,
-    PortalModule
+    PortalModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    TableComponent
   ],
   bootstrap: [AppComponent]
 })

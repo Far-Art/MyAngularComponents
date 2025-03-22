@@ -1,0 +1,15 @@
+.full-width-table {
+  width: 100%;
+}
+
+th {
+  user-select: none;
+}
+
+tr.selected {
+  background-color: rgba(0, 0, 255, 0.2);
+}
+
+.mat-mdc-paginator-page-size{
+  user-select: none;
+}

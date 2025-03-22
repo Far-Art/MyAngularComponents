@@ -11,7 +11,7 @@
     </div>
   </div>
 
-  <div class="collapsible-container-content"
+  <div @expandCollapse class="collapsible-container-content"
        [ngClass]="{'disabled': disabled, 'nested': isNested}" *ngIf="templateRef && !isCollapsed">
     <ng-container [ngTemplateOutlet]="templateRef"></ng-container>
   </div>

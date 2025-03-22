@@ -1,6 +1,5 @@
 import {AfterViewInit, Component, ContentChild, EventEmitter, Input, Optional, Output, SkipSelf, TemplateRef} from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {CollapsibleContainerBodyComponent} from './collapsible-container-body/collapsible-container-body.component';
 
 
 @Component({
