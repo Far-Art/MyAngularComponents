@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ContentChildren, ElementRef, forwardRef, Input, OnChanges, QueryList, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, Component, ContentChildren, ElementRef, forwardRef, Input, OnChanges, QueryList, ViewChild} from '@angular/core';
 import {MatColumnDef, MatTable, MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
@@ -12,6 +12,7 @@ type TableData = { [key: string]: any };
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
   standalone: true,
+
   imports: [MatTableModule, MatPaginatorModule, MatSortModule],
   providers: [
     {
@@ -30,11 +31,12 @@ export class TableComponent<T> extends MatSort implements OnChanges, AfterViewIn
   protected displayedColumns!: string[];
   protected dataSource!: MatTableDataSource<TableData>;
 
-  @ViewChild('tableContainer', {read: ElementRef}) private tableContainer!: ElementRef<HTMLDivElement>;
+  @ViewChild('tableContainer', {read: ElementRef}) private tableContainer!: ElementRef<HTMLTableElement>;
   @ViewChild(MatTable) private table!: MatTable<TableData>;
   @ViewChild(MatPaginator) private paginator!: MatPaginator;
   @ContentChildren(MatColumnDef) private viewColumnDefs!: QueryList<MatColumnDef>;
   private selection = new SelectionModel<TableData>(false, []);
+  private checkIntervalId: any;
 
   constructor() {
     super();
@@ -42,19 +44,24 @@ export class TableComponent<T> extends MatSort implements OnChanges, AfterViewIn
   }
 
   ngAfterViewInit() {
+    this.checkIntervalId = setInterval(() => {
+        this.dataSource.data = this.tableData;
+    }, 500);
+
     setTimeout(() => {
       this.displayedColumns = this.viewColumnDefs.map(colDef => colDef.name);
       this.viewColumnDefs.forEach(colDef => this.table.addColumnDef(colDef));
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this;
-      this.dataSource.data = this.tableData;
+      this.dataSource.data = this.tableData.slice();
       this.dataSource.paginator?.page.subscribe(() => this.selection.clear());
     })
   }
 
   override ngOnChanges() {
-    super.ngOnChanges();
+    console.log('changes')
     this.dataSource.data = this.tableData;
+    super.ngOnChanges();
   }
 
   onTableKeydown(event: KeyboardEvent) {
@@ -132,6 +139,11 @@ export class TableComponent<T> extends MatSort implements OnChanges, AfterViewIn
         this.selection.clear();
       }
     });
+  }
+
+  override ngOnDestroy() {
+    super.ngOnDestroy();
+    clearInterval(this.checkIntervalId);
   }
 
   private getPageRows() {

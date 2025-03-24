@@ -47,7 +47,30 @@ export class AppComponent implements AfterViewInit {
           symbol: 'Hee'
         }
       ]
-    }, 1000)
+    })
+
+    setTimeout(() => {
+      this.ELEMENT_DATA.push(
+        {
+          position: 1,
+          name: 'aaaaa',
+          weight: 1.0079,
+          symbol: 'H'
+        },
+        {
+          position: 2,
+          name: 'aaaaa',
+          weight: 5.0026,
+          symbol: 'He'
+        },
+        {
+          position: 3,
+          name: 'aaaaaa',
+          weight: 4.0026,
+          symbol: 'Hee'
+        })
+    }, 2000)
+
   }
 
   onTableActivate = (value: PeriodicElement) => {
