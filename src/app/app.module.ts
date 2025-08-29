@@ -27,6 +27,7 @@ import { TableComponent } from './components/table/table.component';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 
 @NgModule({
@@ -71,6 +72,9 @@ import {MatSortModule} from '@angular/material/sort';
     MatSortModule,
     TableComponent
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [
+    provideAnimationsAsync()
+  ]
 })
 export class AppModule {}
