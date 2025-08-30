@@ -5,11 +5,7 @@
   --bs-primary-rgb: 13, 110, 253;
   --bs-body-bg-rgb: 255, 255, 255;
 
-  color: rgb(214, 51, 132);
   color: rgb(112, 44, 249);
-  color: rgb(255, 228, 132);
-  color: rgb(13, 110, 253);
-  color: rgb(255, 255, 255);
 
   background-image: linear-gradient(180deg, rgba(var(--bs-body-bg-rgb), 0.01), rgba(var(--bs-body-bg-rgb), 1) 85%),
                     radial-gradient(ellipse at top left, rgba(var(--bs-primary-rgb), 0.5), transparent 50%),

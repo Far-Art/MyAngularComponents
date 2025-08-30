@@ -1,29 +1,7 @@
 <div class="main-page-container">
-<!--  <fa-collapsible-container style="width: 400px" title="title">-->
-<!--    <ng-template>-->
-<!--      <ims-input></ims-input>-->
-<!--    </ng-template>-->
-<!--  </fa-collapsible-container>-->
-
-  <fa-table [tableData]="ELEMENT_DATA" >
-      <ng-container matColumnDef="position">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> No.</th>
-        <td mat-cell *matCellDef="let element"> {{ element.position }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name</th>
-        <td mat-cell *matCellDef="let element"> {{ element.name }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="weight">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Weight</th>
-        <td mat-cell *matCellDef="let element"> {{ element.weight }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="symbol">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Symbol</th>
-        <td mat-cell *matCellDef="let element"> {{ element.symbol }}</td>
-      </ng-container>
-  </fa-table>
+    <div tabindex="0" [faPopover]="templateRef">hover me / focus me</div>
+    <ng-template #templateRef>
+        <div>popover</div>
+    </ng-template>
 </div>
+

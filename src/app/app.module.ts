@@ -28,6 +28,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import {PopoverDirective} from './directives/popover.directive';
 
 
 @NgModule({
@@ -52,26 +53,27 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     EllipsisDirective,
     AutocompleteComponent
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    ScrollingModule,
-    OverlayModule,
-    CdkVirtualScrollViewport,
-    CdkVirtualForOf,
-    CdkFixedSizeVirtualScroll,
-    CdkConnectedOverlay,
-    CdkOverlayOrigin,
-    A11yModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatIconModule,
-    PortalModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    TableComponent
-  ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        ScrollingModule,
+        OverlayModule,
+        CdkVirtualScrollViewport,
+        CdkVirtualForOf,
+        CdkFixedSizeVirtualScroll,
+        CdkConnectedOverlay,
+        CdkOverlayOrigin,
+        A11yModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatIconModule,
+        PortalModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        TableComponent,
+        PopoverDirective
+    ],
   bootstrap: [AppComponent],
   providers: [
     provideAnimationsAsync()
