@@ -24,33 +24,40 @@ export class PopoverDirective {
     @Output() popoverClosed = new EventEmitter<void>();
 
     @HostBinding('attr.aria-haspopup') ariaHaspopup = 'dialog';
-    @HostBinding('attr.aria-expanded') get ariaExpanded() { return !!this.overlayRef?.hasAttached(); }
-
     private overlayRef?: OverlayRef;
-
     private triggerHovered = false;
     private triggerFocused = false;
     private overlayHovered = false;
     private overlayFocused = false;
-
     private openTimer?: number;
     private closeTimer?: number;
-
-    private onOverlayMouseEnter = () => { this.overlayHovered = true; this.clearCloseTimer(); };
-    private onOverlayMouseLeave = () => { this.overlayHovered = false; this.maybeScheduleClose(); };
-    private onOverlayFocusIn    = () => { this.overlayFocused = true; this.clearCloseTimer(); };
-    private onOverlayFocusOut   = () => { this.overlayFocused = false; this.maybeScheduleClose(); };
-
     private readonly overlay = inject(Overlay);
     private readonly el = inject(ElementRef<HTMLElement>);
     private readonly vcr = inject(ViewContainerRef);
     private readonly injector = inject(Injector);
     private readonly envInjector = inject(EnvironmentInjector);
 
-    @HostListener('mouseenter') onMouseEnter() { this.triggerHovered = true; this.scheduleOpen(); }
-    @HostListener('mouseleave') onMouseLeave() { this.triggerHovered = false; this.maybeScheduleClose(); }
-    @HostListener('focusin') onFocusIn()       { this.triggerFocused = true; this.scheduleOpen(); }
-    @HostListener('focusout') onFocusOut()     { this.triggerFocused = false; this.maybeScheduleClose(); }
+    @HostBinding('attr.aria-expanded') get ariaExpanded() { return !!this.overlayRef?.hasAttached(); }
+
+    @HostListener('mouseenter') onMouseEnter() {
+        this.triggerHovered = true;
+        this.scheduleOpen();
+    }
+
+    @HostListener('mouseleave') onMouseLeave() {
+        this.triggerHovered = false;
+        this.maybeScheduleClose();
+    }
+
+    @HostListener('focusin') onFocusIn() {
+        this.triggerFocused = true;
+        this.scheduleOpen();
+    }
+
+    @HostListener('focusout') onFocusOut() {
+        this.triggerFocused = false;
+        this.maybeScheduleClose();
+    }
 
     @HostListener('document:keydown', ['$event'])
     onDocKeydown(ev: KeyboardEvent) {
@@ -62,6 +69,26 @@ export class PopoverDirective {
         this.overlayRef?.dispose();
         this.clearAllTimers();
     }
+
+    private onOverlayMouseEnter = () => {
+        this.overlayHovered = true;
+        this.clearCloseTimer();
+    };
+
+    private onOverlayMouseLeave = () => {
+        this.overlayHovered = false;
+        this.maybeScheduleClose();
+    };
+
+    private onOverlayFocusIn = () => {
+        this.overlayFocused = true;
+        this.clearCloseTimer();
+    };
+
+    private onOverlayFocusOut = () => {
+        this.overlayFocused = false;
+        this.maybeScheduleClose();
+    };
 
     private scheduleOpen() {
         if (this.overlayRef?.hasAttached()) return;
@@ -82,18 +109,57 @@ export class PopoverDirective {
         return this.triggerHovered || this.triggerFocused || this.overlayHovered || this.overlayFocused;
     }
 
-    private clearOpenTimer()  { if (this.openTimer)  { clearTimeout(this.openTimer);  this.openTimer = undefined; } }
-    private clearCloseTimer() { if (this.closeTimer) { clearTimeout(this.closeTimer); this.closeTimer = undefined; } }
-    private clearAllTimers()  { this.clearOpenTimer(); this.clearCloseTimer(); }
+    private clearOpenTimer() {
+        if (this.openTimer) {
+            clearTimeout(this.openTimer);
+            this.openTimer = undefined;
+        }
+    }
+
+    private clearCloseTimer() {
+        if (this.closeTimer) {
+            clearTimeout(this.closeTimer);
+            this.closeTimer = undefined;
+        }
+    }
+
+    private clearAllTimers() {
+        this.clearOpenTimer();
+        this.clearCloseTimer();
+    }
 
     private ensureOverlay() {
         if (this.overlayRef) return;
 
         const positions: ConnectedPosition[] = this.popoverPositions ?? [
-            { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: this.popoverOffset },
-            { originX: 'start', originY: 'top',    overlayX: 'start', overlayY: 'bottom', offsetY: -this.popoverOffset },
-            { originX: 'end',   originY: 'bottom', overlayX: 'end',   overlayY: 'top', offsetY: this.popoverOffset },
-            { originX: 'end',   originY: 'top',    overlayX: 'end',   overlayY: 'bottom', offsetY: -this.popoverOffset },
+            {
+                originX: 'start',
+                originY: 'bottom',
+                overlayX: 'start',
+                overlayY: 'top',
+                offsetY: this.popoverOffset
+            },
+            {
+                originX: 'start',
+                originY: 'top',
+                overlayX: 'start',
+                overlayY: 'bottom',
+                offsetY: -this.popoverOffset
+            },
+            {
+                originX: 'end',
+                originY: 'bottom',
+                overlayX: 'end',
+                overlayY: 'top',
+                offsetY: this.popoverOffset
+            },
+            {
+                originX: 'end',
+                originY: 'top',
+                overlayX: 'end',
+                overlayY: 'bottom',
+                offsetY: -this.popoverOffset
+            }
         ];
 
         const positionStrategy = this.overlay.position()
@@ -137,14 +203,19 @@ export class PopoverDirective {
         this.ensureOverlay();
 
         if (this.popover instanceof TemplateRef) {
-            const portal = new TemplatePortal(this.popover, this.vcr, { $implicit: this.popoverData });
+            const portal = new TemplatePortal(this.popover, this.vcr, {$implicit: this.popoverData});
             this.overlayRef!.attach(portal);
         } else {
             const injector = Injector.create({
                 parent: this.injector,
-                providers: [{ provide: POPOVER_DATA, useValue: this.popoverData }]
+                providers: [
+                    {
+                        provide: POPOVER_DATA,
+                        useValue: this.popoverData
+                    }
+                ]
             });
-            const portal = new ComponentPortal(this.popover, null, injector, this.envInjector as any);
+            const portal = new ComponentPortal(this.popover);
             this.overlayRef!.attach(portal);
         }
 
