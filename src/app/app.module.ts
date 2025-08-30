@@ -28,7 +28,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import {PopoverDirective} from './directives/popover.directive';
+import {PopoverDirective} from './directives/popover/popover.directive';
 
 
 @NgModule({

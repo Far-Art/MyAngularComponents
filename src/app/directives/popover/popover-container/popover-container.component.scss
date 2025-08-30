@@ -1,0 +1,61 @@
+.ims-popover {
+    --ims-popover-bg: var(--md-sys-color-surface, #fff);
+    --ims-popover-fg: var(--md-sys-color-on-surface, #1f1f1f);
+    --ims-popover-radius: 12px;
+    --ims-popover-shadow: 0 8px 30px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+    --ims-popover-border: 1px solid rgba(0, 0, 0, 0.08);
+    --ims-popover-padding: 12px 14px;
+    --ims-popover-maxw: 320px;
+
+    background: var(--ims-popover-bg);
+    color: var(--ims-popover-fg);
+    border-radius: var(--ims-popover-radius);
+    box-shadow: var(--ims-popover-shadow);
+    border: var(--ims-popover-border);
+    padding: var(--ims-popover-padding);
+    max-width: var(--ims-popover-maxw);
+    outline: none;
+    position: relative;
+}
+
+/* Arrow base (defaults to top edge, will flip with --above) */
+.ims-popover__arrow {
+    position: absolute;
+    top: -6px;
+    width: 12px;
+    height: 12px;
+    transform: rotate(45deg);
+    background: var(--ims-popover-bg);
+    border-inline-start: 1px solid rgba(0, 0, 0, 0.08);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.04);
+}
+
+/* Flip arrow when popover is above trigger */
+.ims-popover--above .ims-popover__arrow {
+    top: auto;
+    bottom: -6px;
+    border-inline-start: 0;
+    border-top: 0;
+    border-inline-end: 1px solid rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+/* Alignment (logical inline) */
+.ims-popover--align-start .ims-popover__arrow {
+    inset-inline-start: 10px;
+    right: auto;
+    transform: rotate(45deg);
+}
+
+.ims-popover--align-center .ims-popover__arrow {
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+}
+
+.ims-popover--align-end .ims-popover__arrow {
+    inset-inline-end: 10px;
+    left: auto;
+    transform: rotate(45deg);
+}

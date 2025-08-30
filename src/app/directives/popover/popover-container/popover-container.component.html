@@ -1,0 +1,15 @@
+<div class="ims-popover"
+     [class.ims-popover--above]="above"
+     [class.ims-popover--align-start]="arrowAlign === 'start'"
+     [class.ims-popover--align-center]="arrowAlign === 'center'"
+     [class.ims-popover--align-end]="arrowAlign === 'end'"
+     [attr.role]="role"
+     [attr.aria-label]="ariaLabel">
+    <div class="ims-popover__arrow"></div>
+
+    <ng-container
+        *ngIf="template"
+        [ngTemplateOutlet]="template"
+        [ngTemplateOutletContext]="context">
+    </ng-container>
+</div>

@@ -1,6 +1,7 @@
-import {Directive, ElementRef, HostBinding, HostListener, inject, input, Input, OnDestroy, output, Renderer2, TemplateRef, ViewContainerRef} from '@angular/core';
-import {ConnectedPosition, Overlay, OverlayConfig, OverlayRef} from '@angular/cdk/overlay';
-import {TemplatePortal} from '@angular/cdk/portal';
+import {ComponentRef, Directive, ElementRef, HostBinding, HostListener, inject, input, Input, OnDestroy, output, Renderer2, TemplateRef} from '@angular/core';
+import {ConnectedPosition, FlexibleConnectedPositionStrategy, Overlay, OverlayConfig, OverlayRef} from '@angular/cdk/overlay';
+import {ComponentPortal} from '@angular/cdk/portal';
+import {ArrowAlign, PopoverContainerComponent} from './popover-container/popover-container.component';
 
 
 @Directive({
@@ -12,15 +13,15 @@ export class PopoverDirective implements OnDestroy {
     /** Provide a TemplateRef */
     popover = input.required<TemplateRef<any>>({alias: 'imsPopover'});
 
-    /** Placement fallbacks */
-    @Input() popoverPositions?: ConnectedPosition[];
-
     /** Pixel offset from trigger */
     @Input() popoverOffset = 4;
 
     /** Debounce/delay (ms) */
     @Input() openDelay = 0;
     @Input() closeDelay = 80;
+
+    @Input() ariaLabel?: string;
+    @Input() role: 'dialog' | 'tooltip' = 'dialog';
 
     /** Events */
     popoverOpened = output<void>();
@@ -40,13 +41,15 @@ export class PopoverDirective implements OnDestroy {
     // DI
     private readonly overlay = inject(Overlay);
     private readonly el = inject(ElementRef<HTMLElement>);
-    private readonly vcr = inject(ViewContainerRef);
     private readonly renderer = inject(Renderer2);
 
     private mouseEnterListener?: () => void;
     private mouseLeaveListener?: () => void;
     private focusEnterListener?: () => void;
     private focusLeaveListener?: () => void;
+
+    private positionStrategy?: FlexibleConnectedPositionStrategy;
+    private containerRef?: ComponentRef<PopoverContainerComponent>;
 
     @HostBinding('attr.aria-expanded')
     get ariaExpanded() { return !!this.overlayRef?.hasAttached(); }
@@ -152,7 +155,24 @@ export class PopoverDirective implements OnDestroy {
     private ensureOverlay() {
         if (this.overlayRef) return;
 
-        const positions: ConnectedPosition[] = this.popoverPositions ?? [
+        const positions: ConnectedPosition[] = [
+            // Preferred: ABOVE, centered
+            {
+                originX: 'center',
+                originY: 'top',
+                overlayX: 'center',
+                overlayY: 'bottom',
+                offsetY: -this.popoverOffset
+            },
+            // Fallback: BELOW, centered
+            {
+                originX: 'center',
+                originY: 'bottom',
+                overlayX: 'center',
+                overlayY: 'top',
+                offsetY: this.popoverOffset
+            },
+            // Fallbacks: above-left / above-right
             {
                 originX: 'start',
                 originY: 'top',
@@ -167,36 +187,56 @@ export class PopoverDirective implements OnDestroy {
                 overlayY: 'bottom',
                 offsetY: -this.popoverOffset
             },
+            // Fallbacks: below-left / below-right
             {
-                originX: 'end',
+                originX: 'start',
                 originY: 'bottom',
-                overlayX: 'end',
+                overlayX: 'start',
                 overlayY: 'top',
                 offsetY: this.popoverOffset
             },
             {
-                originX: 'start',
+                originX: 'end',
                 originY: 'bottom',
-                overlayX: 'start',
+                overlayX: 'end',
                 overlayY: 'top',
                 offsetY: this.popoverOffset
             }
         ];
 
-        const positionStrategy = this.overlay.position()
-                                     .flexibleConnectedTo(this.el)
-                                     .withPositions(positions)
-                                     .withFlexibleDimensions(false)
-                                     .withPush(true);
+        this.positionStrategy = this.overlay.position()
+                                    .flexibleConnectedTo(this.el)
+                                    .withPositions(positions)
+                                    .withFlexibleDimensions(false)
+                                    .withPush(true);
+
+        this.positionStrategy.positionChanges.subscribe((change) => {
+            const isAbove = change.connectionPair.overlayY === 'bottom';
+            if (this.containerRef) {
+                this.containerRef.instance.above = isAbove;
+                let align: ArrowAlign;
+                if (change.connectionPair.overlayX === 'start') {
+                    align = 'start';
+                } else if (change.connectionPair.overlayX === 'end') {
+                    align = 'end';
+                } else {
+                    align = 'center'; // default
+                }
+                this.containerRef.instance.arrowAlign = align;
+
+                this.containerRef.changeDetectorRef.markForCheck();
+            }
+        });
 
         const cfg: OverlayConfig = {
-            positionStrategy,
-            hasBackdrop: false, // interactive hover/focus popover
+            positionStrategy: this.positionStrategy,
+            hasBackdrop: false,
             scrollStrategy: this.overlay.scrollStrategies.reposition()
         };
 
         this.overlayRef = this.overlay.create(cfg);
         this.overlayRef.detachments().subscribe(() => {
+            this.containerRef = undefined;
             this.detachOverlayListeners();
             this.popoverClosed.emit();
         });
@@ -219,16 +259,36 @@ export class PopoverDirective implements OnDestroy {
     }
 
     private open() {
-        if (!this.popover()) return;
+        const tpl = this.popover();
+        if (!tpl) return;
+
         this.ensureOverlay();
 
-        const portal = new TemplatePortal(this.popover(), this.vcr);
-        this.overlayRef!.attach(portal);
+        const portal = new ComponentPortal(PopoverContainerComponent);
+        this.containerRef = this.overlayRef!.attach(portal);
+        this.containerRef.instance.template = tpl;
+        this.containerRef.instance.ariaLabel = this.ariaLabel;
+        this.containerRef.instance.role = this.role;
+
+        // Initial flip + align (before first positionChanges tick to avoid flicker)
+        const current = this.positionStrategy!.positions[0];
+        this.containerRef.instance.above = current.overlayY === 'bottom';
+
+        let align: ArrowAlign;
+        if (current.overlayX === 'start') {
+            align = 'start';
+        } else if (current.overlayX === 'end') {
+            align = 'end';
+        } else {
+            align = 'center';
+        }
+        this.containerRef.instance.arrowAlign = align;
+
+        this.containerRef.changeDetectorRef.detectChanges();
 
         this.attachOverlayListeners();
         this.popoverOpened.emit();
 
-        // If opened via keyboard, try to focus the first focusable inside.
         queueMicrotask(() => {
             if (!this.triggerHovered && this.triggerFocused) {
                 const firstFocusable = this.overlayRef!.overlayElement.querySelector<HTMLElement>(
@@ -248,4 +308,5 @@ export class PopoverDirective implements OnDestroy {
         this.triggerHovered = this.triggerFocused = this.overlayHovered = this.overlayFocused = false;
         this.close();
     }
+
 }
