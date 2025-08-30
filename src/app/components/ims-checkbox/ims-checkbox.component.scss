@@ -1,0 +1,124 @@
+:host {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    --ims-size: 18px;
+    --ims-radius: 4px;
+    --ims-border: 1.5px;
+    --ims-color: var(--md-sys-color-primary, #3f51b5);
+    --ims-border-color: color-mix(in oklab, var(--ims-color) 50%, #000 0%);
+    --ims-bg: var(--md-sys-color-surface, #fff);
+    --ims-disabled: 0.38;
+}
+
+.ims-checkbox {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    outline: none;
+
+    &:disabled,
+    :host(.ims-disabled) & {
+        cursor: not-allowed;
+        opacity: var(--ims-disabled);
+    }
+}
+
+:host(.ims-focused) .ims-checkbox {
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--ims-color) 20%, transparent);
+    border-radius: 6px;
+}
+
+.box {
+    width: var(--ims-size);
+    height: var(--ims-size);
+    border-radius: var(--ims-radius);
+    border: var(--ims-border) solid var(--ims-border-color);
+    background: var(--ims-bg);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 140ms ease, background-color 140ms ease, transform 120ms ease;
+}
+
+.mark {
+    width: calc(var(--ims-size) - 4px);
+    height: calc(var(--ims-size) - 4px);
+}
+
+.check, .dash {
+    transition: opacity 120ms ease;
+    stroke: var(--ims-color);
+}
+
+.check {
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 22;
+    stroke-dashoffset: 22; // hidden by default
+}
+
+.dash {
+    fill: var(--ims-color);
+    opacity: 0;
+    rx: 1;
+}
+
+/* Checked */
+:host(.ims-checked) .box {
+    border-color: var(--ims-color);
+    background: color-mix(in oklab, var(--ims-color) 14%, var(--ims-bg));
+}
+
+:host(.ims-checked) .check {
+    animation: draw-check 170ms ease forwards;
+}
+
+@keyframes draw-check {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+:host(:not(.ims-checked)) .check {
+    stroke-dashoffset: 22;
+}
+
+/* Indeterminate */
+:host(.ims-indeterminate) .dash {
+    opacity: 1;
+    transform-origin: center;
+    animation: dash-pop 160ms ease forwards;
+}
+
+@keyframes dash-pop {
+    0% {
+        transform: scaleX(0.4);
+        opacity: 0;
+    }
+    100% {
+        transform: scaleX(1);
+        opacity: 1;
+    }
+}
+
+:host(.ims-indeterminate) .check {
+    opacity: 0;
+}
+
+.ims-checkbox:active .box {
+    transform: scale(0.98);
+}
+
+//.label {
+//    line-height: 1;
+//    color: var(--md-sys-color-on-surface, currentColor);
+//}

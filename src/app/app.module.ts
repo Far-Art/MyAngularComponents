@@ -29,6 +29,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {PopoverDirective} from './directives/popover/popover.directive';
+import {ImsCheckboxComponent} from './components/ims-checkbox/ims-checkbox.component';
 
 
 @NgModule({
@@ -72,7 +73,8 @@ import {PopoverDirective} from './directives/popover/popover.directive';
         MatPaginatorModule,
         MatSortModule,
         TableComponent,
-        PopoverDirective
+        PopoverDirective,
+        ImsCheckboxComponent
     ],
   bootstrap: [AppComponent],
   providers: [
