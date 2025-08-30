@@ -33,12 +33,26 @@ export type ImsCheckboxChange = { checked: boolean; indeterminate: boolean };
 })
 export class ImsCheckboxComponent implements ControlValueAccessor, OnDestroy {
     // === External readonly inputs ===
-    checkedInput = input<boolean, BooleanInput>(false, {transform: coerceBooleanProperty, alias: 'checked'});
-    indeterminateInput = input<boolean, BooleanInput>(false, {transform: coerceBooleanProperty, alias: 'indeterminate'});
-    disabledInput = input<boolean, BooleanInput>(false, {transform: coerceBooleanProperty, alias: 'disabled'});
+    checkedInput = input<boolean, BooleanInput>(false, {
+        transform: coerceBooleanProperty,
+        alias: 'checked'
+    });
+    indeterminateInput = input<boolean, BooleanInput>(false, {
+        transform: coerceBooleanProperty,
+        alias: 'indeterminate'
+    });
+    disabledInput = input<boolean, BooleanInput>(false, {
+        transform: coerceBooleanProperty,
+        alias: 'disabled'
+    });
     required = input<boolean, BooleanInput>(false, {transform: coerceBooleanProperty});
     id = input<string>('');
     name = input<string>('');
+
+    // Value mapping
+    trueValue = input<unknown>(true);
+    falseValue = input<unknown>(false);
+
     // === Outputs ===
     changed = output<ImsCheckboxChange>();
     focused = signal(false);
@@ -53,13 +67,14 @@ export class ImsCheckboxComponent implements ControlValueAccessor, OnDestroy {
     disabled = computed(() => this.disabledInput() || this._disabledCva());
 
     private _usedInForm = signal(false);
+    private _hasFirstWrite = false;
 
     constructor() {
         // Mirror external inputs -> internal signals
         effect(() => {
             const v = this.indeterminateInput();
             untracked(() => this._indeterminate.set(v));
-        }, { allowSignalWrites: true });
+        }, {allowSignalWrites: true});
 
         // Mirror [checked] only when NOT used in a form
         effect(() => {
@@ -67,7 +82,7 @@ export class ImsCheckboxComponent implements ControlValueAccessor, OnDestroy {
                 const v = this.checkedInput();
                 untracked(() => this._checked.set(v));
             }
-        }, { allowSignalWrites: true });
+        }, {allowSignalWrites: true});
 
         // Focus ring mgmt and touched
         this.focusMonitor.monitor(this.el.nativeElement, true).subscribe(origin => {
@@ -91,8 +106,9 @@ export class ImsCheckboxComponent implements ControlValueAccessor, OnDestroy {
         } else {
             this._checked.set(!this._checked());
         }
+        const nextVal = this.mapToValue(this._checked());
 
-        this.onChange(this._checked());
+        this.onChange(nextVal);
         this.changed.emit({
             checked: this._checked(),
             indeterminate: this._indeterminate()
@@ -117,10 +133,30 @@ export class ImsCheckboxComponent implements ControlValueAccessor, OnDestroy {
 
     // === ControlValueAccessor ===
     writeValue(value: boolean | null | undefined): void {
-        this._checked.set(!!value);
+        this._usedInForm.set(true);
+
+        const t = this.trueValue();
+        const f = this.falseValue();
+
+        // UI state: checked if equals trueValue
+        const isTrue = Object.is(value, t);
+        this._checked.set(isTrue);
+
+        // If this is the first init, do not emit any change back.
+        if (!this._hasFirstWrite) {
+            this._hasFirstWrite = true;
+            return;
+        }
+
+        // After first init: coerce unknowns to falseValue and push back
+        if (!isTrue && !Object.is(value, f)) {
+            // defer to avoid change-cycle warnings
+            queueMicrotask(() => this.onChange(f));
+        }
     }
 
     registerOnChange(fn: (val: boolean) => void): void {
+        this._usedInForm.set(true);
         this.onChange = fn;
     }
 
@@ -142,8 +178,13 @@ export class ImsCheckboxComponent implements ControlValueAccessor, OnDestroy {
         this.focusMonitor.stopMonitoring(this.el.nativeElement);
     }
 
+    // ---- Helpers for mapping ----
+    private mapToValue(checked: boolean): any {
+        return checked ? this.trueValue() : this.falseValue();
+    }
+
     // CVA hooks
-    private onChange: (val: boolean) => void = () => {};
+    private onChange: (val: any) => void = () => {};
 
     private onTouched: () => void = () => {};
 }
