@@ -18,12 +18,16 @@ export class AppComponent implements AfterViewInit {
   title = 'My-Angular-Components';
 
   form = new FormGroup({
-    input: new FormControl('')
+    input: new FormControl('0')
   });
 
   ELEMENT_DATA: PeriodicElement[] = [];
 
-  constructor() { }
+  constructor() {
+    this.form.valueChanges.subscribe(value => {
+      console.log(value);
+    })
+  }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
