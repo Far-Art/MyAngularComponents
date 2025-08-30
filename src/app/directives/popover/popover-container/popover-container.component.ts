@@ -24,4 +24,7 @@ export class PopoverContainerComponent {
     // flipped state and alignment (set by the directive)
     @Input() above = false;
     arrowAlign: ArrowAlign = 'center';
+
+    @Input() open = false;     // true after attach → triggers enter transition
+    @Input() leaving = false;  // true before close → triggers exit transition
 }

@@ -14,7 +14,7 @@ export class PopoverDirective implements OnDestroy {
     popover = input.required<TemplateRef<any>>({alias: 'ims-popover'});
 
     /** Pixel offset from trigger */
-    @Input() popoverOffset = 4;
+    @Input() popoverOffset = 8;
 
     /** Debounce/delay (ms) */
     @Input() openDelay = 0;
@@ -22,13 +22,12 @@ export class PopoverDirective implements OnDestroy {
 
     @Input() ariaLabel?: string;
     @Input() role: 'dialog' | 'tooltip' = 'dialog';
-
     /** Events */
     popoverOpened = output<void>();
     popoverClosed = output<void>();
-
     // ARIA on trigger
     @HostBinding('attr.aria-haspopup') ariaHaspopup = 'dialog';
+    private animationDurationMs = 160;
     private overlayRef?: OverlayRef;
     // state flags
     private triggerHovered = false;
@@ -286,6 +285,14 @@ export class PopoverDirective implements OnDestroy {
 
         this.containerRef.changeDetectorRef.detectChanges();
 
+        // ENTER: toggle .is-open on the next frame to trigger transition
+        requestAnimationFrame(() => {
+            if (this.containerRef) {
+                this.containerRef.instance.open = true;
+                this.containerRef.changeDetectorRef.markForCheck();
+            }
+        });
+
         this.attachOverlayListeners();
         this.popoverOpened.emit();
 
@@ -301,7 +308,31 @@ export class PopoverDirective implements OnDestroy {
 
     private close() {
         this.clearAllTimers();
-        this.overlayRef?.detach();
+        // If we have a container, run exit animation, then detach
+        const pane = this.overlayRef?.overlayElement.querySelector('.ims-popover') as HTMLElement | null;
+        if (this.containerRef && pane) {
+            // trigger exit
+            this.containerRef.instance.leaving = true;
+            this.containerRef.instance.open = false;
+            this.containerRef.changeDetectorRef.markForCheck();
+
+            let done = false;
+            const cleanup = () => {
+                if (done) return;
+                done = true;
+                unlisten?.();
+                clearTimeout(fallbackTimer);
+                this.overlayRef?.detach();
+            };
+
+            const unlisten = this.renderer.listen(pane, 'transitionend', (ev: TransitionEvent) => {
+                if (ev.target === pane) cleanup();
+            });
+
+            const fallbackTimer = window.setTimeout(cleanup, this.animationDurationMs + 50);
+        } else {
+            this.overlayRef?.detach();
+        }
     }
 
     private forceClose() {

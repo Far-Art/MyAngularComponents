@@ -6,6 +6,8 @@
     --ims-popover-border: 1px solid rgba(0, 0, 0, 0.08);
     --ims-popover-padding: 12px 14px;
     --ims-popover-maxw: 320px;
+    --ims-popover-ease: cubic-bezier(.2,.0,.2,1);
+    --ims-popover-dur: 160ms;
 
     background: var(--ims-popover-bg);
     color: var(--ims-popover-fg);
@@ -16,6 +18,37 @@
     max-width: var(--ims-popover-maxw);
     outline: none;
     position: relative;
+
+    opacity: 0;
+    transform: translateY(-4px) scale(.985);
+    will-change: opacity, transform;
+    transition:
+      opacity var(--ims-popover-dur) var(--ims-popover-ease),
+      transform var(--ims-popover-dur) var(--ims-popover-ease);
+
+    /* ENTER active */
+    &.is-open {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    /* EXIT active */
+    .is-leaving {
+        opacity: 0;
+        transform: translateY(-4px) scale(.985);
+    }
+}
+
+
+/* If positioned BELOW, nudge animation downwards for symmetry */
+.ims-popover:not(.ims-popover--above) {
+    transform: translateY(4px) scale(.985);
+}
+.ims-popover:not(.ims-popover--above).is-open {
+    transform: translateY(0) scale(1);
+}
+.ims-popover:not(.ims-popover--above).is-leaving {
+    transform: translateY(4px) scale(.985);
 }
 
 /* Arrow base (defaults to top edge, will flip with --above) */
