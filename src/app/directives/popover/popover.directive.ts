@@ -5,13 +5,13 @@ import {ArrowAlign, PopoverContainerComponent} from './popover-container/popover
 
 
 @Directive({
-    selector: '[imsPopover]',
+    selector: '[ims-popover]',
     standalone: true
 })
 export class PopoverDirective implements OnDestroy {
 
     /** Provide a TemplateRef */
-    popover = input.required<TemplateRef<any>>({alias: 'imsPopover'});
+    popover = input.required<TemplateRef<any>>({alias: 'ims-popover'});
 
     /** Pixel offset from trigger */
     @Input() popoverOffset = 4;
